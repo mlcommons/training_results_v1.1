@@ -1,0 +1,349 @@
++ [[ 1 == 1 ]]
++ bash -c 'echo -n '\''Clearing cache on '\'' && hostname && sync && sudo /sbin/sysctl vm.drop_caches=3'
+Clearing cache on ubuntu
+vm.drop_caches = 3
++ docker exec -it dlrm_hugectr python3 -c '
+from mlperf_logging.mllog import constants
+from mlperf_logger.utils import log_event
+log_event(key=constants.CACHE_CLEAR, value=True)'
+:::MLLOG {"namespace": "", "time_ms": 1634744966745, "event_type": "POINT_IN_TIME", "key": "cache_clear", "value": true, "metadata": {"file": "<string>", "lineno": 4}}
++ echo 'Beginning trial 4 of 5'
+Beginning trial 4 of 5
++ docker exec -it --env=BATCH_SIZE --env=CONFIG --env=CUDA_DEVICE_MAX_CONNECTIONS --env=DGXNGPU --env=DGXNNODES --env=DGXSYSTEM --env=MOUNTS --env=OMPI_MCA_btl --env=WALLTIME --env=DATADIR --env=DATASET_TYPE --env=DGXSYSTEM dlrm_hugectr bash ./run_and_time.sh
+++ date +%s
++ START_TIMESTAMP=1634744966
++ echo 'DLRM_BIND is set to "numactl --membind=0,1"'
+DLRM_BIND is set to "numactl --membind=0,1"
++ numactl --membind=0,1 python3 nf5488a5.py
++ tee /tmp/dlrm_hugectr.log
+[0.00, init_start, ]
+====================================================Model Init=====================================================
+[20d15h49m28s][HUGECTR][INFO]: Global seed is 2544857365
+[20d15h49m28s][HUGECTR][INFO]: Device to NUMA mapping:
+  GPU 0 ->  node 0
+  GPU 1 ->  node 0
+  GPU 2 ->  node 0
+  GPU 3 ->  node 0
+  GPU 4 ->  node 1
+  GPU 5 ->  node 1
+  GPU 6 ->  node 1
+  GPU 7 ->  node 1
+
+[20d15h49m45s][HUGECTR][INFO]: Start all2all warmup
+[20d15h50m09s][HUGECTR][INFO]: End all2all warmup
+[20d15h50m09s][HUGECTR][INFO]: Using All-reduce algorithm OneShot
+Device 0: NVIDIA A100-SXM-80GB
+Device 1: NVIDIA A100-SXM-80GB
+Device 2: NVIDIA A100-SXM-80GB
+Device 3: NVIDIA A100-SXM-80GB
+Device 4: NVIDIA A100-SXM-80GB
+Device 5: NVIDIA A100-SXM-80GB
+Device 6: NVIDIA A100-SXM-80GB
+Device 7: NVIDIA A100-SXM-80GB
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: num_threads = 16
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: num_batches_per_thread = 4
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: io_block_size = 552960
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: io_depth = 2
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: io_alignment = 512
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: shuffle = ON
+[20d15h50m09s][HUGECTR][INFO]: AsyncReader: num_iterations_statistics = 20
+[20d15h50m17s][HUGECTR][INFO]: Using Hybrid Embedding with train batch 55296 and eval batch 1736704
+[20d15h50m17s][HUGECTR][INFO]: Save the model graph to dlrm.json, successful
+===================================================Model Compile===================================================
+[20d15h50m55s][HUGECTR][INFO]: Starting AUC NCCL warm-up
+[20d15h50m55s][HUGECTR][INFO]: Warm-up done
+[93372.55, init_end, ]
+[93372.63, run_start, ]
+[20d15h51m01s][HUGECTR][INFO]: Initializing Hybrid Embedding
+[20d15h51m01s][HUGECTR][INFO]: Initialized hybrid model with 38160 frequent categories, probability of being frequent is 0.901154
+[20d15h51m01s][HUGECTR][INFO]: Estimated number of infrequent categories per train batch: 142110, eval batch:  4463336
+===================================================Model Summary===================================================
+Label                                   Dense                         Sparse                        
+label                                   dense                          data1                         
+(None, 1)                               (None, 16)                              
+------------------------------------------------------------------------------------------------------------------
+Layer Type                              Input Name                    Output Name                   Output Shape                  
+------------------------------------------------------------------------------------------------------------------
+HybridSparseEmbedding                   data1                         sparse_embedding1             (None, 26, 128)               
+FusedInnerProduct                       dense                         fc11,fc12,fc13,fc14                                         
+FusedInnerProduct                       fc11,fc12,fc13,fc14           fc21,fc22,fc23,fc24                                         
+FusedInnerProduct                       fc21,fc22,fc23,fc24           fc3                           (None, 128)                   
+Interaction                             fc3,sparse_embedding1         interaction1,interaction_grad                               
+FusedInnerProduct                       interaction1,interaction_grad fc41,fc42,fc43,fc44                                         
+FusedInnerProduct                       fc41,fc42,fc43,fc44           fc51,fc52,fc53,fc54                                         
+FusedInnerProduct                       fc51,fc52,fc53,fc54           fc61,fc62,fc63,fc64                                         
+FusedInnerProduct                       fc61,fc62,fc63,fc64           fc71,fc72,fc73,fc74                                         
+FusedInnerProduct                       fc71,fc72,fc73,fc74           fc8                           (None, 1)                     
+BinaryCrossEntropyLoss                  fc8,label                     loss                                                        
+------------------------------------------------------------------------------------------------------------------
+=====================================================Model Fit=====================================================
+[20d15h51m10s][HUGECTR][INFO]: Use non-epoch mode with number of iterations: 75868
+[20d15h51m10s][HUGECTR][INFO]: Training batchsize: 55296, evaluation batchsize: 1736704
+[20d15h51m10s][HUGECTR][INFO]: Evaluation interval: 3793, snapshot interval: 2000000
+[20d15h51m10s][HUGECTR][INFO]: Sparse embedding trainable: 1, dense network trainable: 1
+[20d15h51m10s][HUGECTR][INFO]: Use mixed precision: 1, scaler: 1024.000000, use cuda graph: 0
+[20d15h51m10s][HUGECTR][INFO]: lr: 24.000000, warmup_steps: 2750, decay_start: 49315, decay_steps: 27772, decay_power: 2.000000, end_lr: 0.000000
+[20d15h51m10s][HUGECTR][INFO]: Training source file: /raid/datasets/criteo/mlperf/40m.limit_preshuffled/train_data.bin
+[20d15h51m10s][HUGECTR][INFO]: Evaluation source file: /raid/datasets/criteo/mlperf/40m.limit_preshuffled/test_data.bin
+[93422.25, train_epoch_start, 0, ]
+[20d15h51m40s][HUGECTR][INFO]: Iter: 1000 Time(1000 iters): 2.372943s Loss: 0.000000
+[20d15h51m50s][HUGECTR][INFO]: Iter: 2000 Time(1000 iters): 1.367331s Loss: 0.000000
+[20d15h51m70s][HUGECTR][INFO]: Iter: 3000 Time(1000 iters): 1.365563s Loss: 0.000000
+[99611.46, eval_start, 0.0499947, ]
+[20d15h51m80s][HUGECTR][INFO]: Evaluation, AUC: 0.776840
+[100285.96, eval_accuracy, 0.77684, 0.0499947, 3793, ]
+[20d15h51m80s][HUGECTR][INFO]: Eval Time for 52 iters: 0.674507s
+[100285.98, eval_stop, 0.0499947, ]
+[20d15h51m90s][HUGECTR][INFO]: Iter: 4000 Time(1000 iters): 2.037165s Loss: 0.000000
+[20d15h51m10s][HUGECTR][INFO]: Iter: 5000 Time(1000 iters): 1.368630s Loss: 0.000000
+[20d15h51m11s][HUGECTR][INFO]: Iter: 6000 Time(1000 iters): 1.368923s Loss: 0.000000
+[20d15h51m13s][HUGECTR][INFO]: Iter: 7000 Time(1000 iters): 1.370536s Loss: 0.000000
+[105475.25, eval_start, 0.0999895, ]
+[20d15h51m14s][HUGECTR][INFO]: Evaluation, AUC: 0.785926
+[105925.11, eval_accuracy, 0.785926, 0.0999895, 7586, ]
+[20d15h51m14s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449863s
+[105925.12, eval_stop, 0.0999895, ]
+[20d15h51m14s][HUGECTR][INFO]: Iter: 8000 Time(1000 iters): 1.814231s Loss: 0.000000
+[20d15h51m16s][HUGECTR][INFO]: Iter: 9000 Time(1000 iters): 1.365765s Loss: 0.000000
+[20d15h51m17s][HUGECTR][INFO]: Iter: 10000 Time(1000 iters): 1.368740s Loss: 0.000000
+[20d15h51m19s][HUGECTR][INFO]: Iter: 11000 Time(1000 iters): 1.365964s Loss: 0.000000
+[111109.68, eval_start, 0.149984, ]
+[20d15h51m20s][HUGECTR][INFO]: Evaluation, AUC: 0.789601
+[111559.55, eval_accuracy, 0.789601, 0.149984, 11379, ]
+[20d15h51m20s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449882s
+[111559.57, eval_stop, 0.149984, ]
+[20d15h51m20s][HUGECTR][INFO]: Iter: 12000 Time(1000 iters): 1.815780s Loss: 0.000000
+[20d15h51m22s][HUGECTR][INFO]: Iter: 13000 Time(1000 iters): 1.364278s Loss: 0.000000
+[20d15h51m23s][HUGECTR][INFO]: Iter: 14000 Time(1000 iters): 1.366936s Loss: 0.000000
+[20d15h51m24s][HUGECTR][INFO]: Iter: 15000 Time(1000 iters): 1.367953s Loss: 0.000000
+[116738.95, eval_start, 0.199979, ]
+[20d15h51m25s][HUGECTR][INFO]: Evaluation, AUC: 0.791516
+[117189.29, eval_accuracy, 0.791516, 0.199979, 15172, ]
+[20d15h51m25s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450356s
+[117189.31, eval_stop, 0.199979, ]
+[20d15h51m26s][HUGECTR][INFO]: Iter: 16000 Time(1000 iters): 1.813459s Loss: 0.000000
+[20d15h51m28s][HUGECTR][INFO]: Iter: 17000 Time(1000 iters): 1.367665s Loss: 0.000000
+[20d15h51m29s][HUGECTR][INFO]: Iter: 18000 Time(1000 iters): 1.365131s Loss: 0.000000
+[122368.89, eval_start, 0.249974, ]
+[20d15h51m31s][HUGECTR][INFO]: Evaluation, AUC: 0.793352
+[122819.47, eval_accuracy, 0.793352, 0.249974, 18965, ]
+[20d15h51m31s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450594s
+[122819.49, eval_stop, 0.249974, ]
+[20d15h51m31s][HUGECTR][INFO]: Iter: 19000 Time(1000 iters): 1.814698s Loss: 0.000000
+[20d15h51m32s][HUGECTR][INFO]: Iter: 20000 Time(1000 iters): 1.364584s Loss: 0.000000
+[20d15h51m34s][HUGECTR][INFO]: Iter: 21000 Time(1000 iters): 1.367973s Loss: 0.000000
+[20d15h51m35s][HUGECTR][INFO]: Iter: 22000 Time(1000 iters): 1.365222s Loss: 0.000000
+[127995.26, eval_start, 0.299968, ]
+[20d15h51m36s][HUGECTR][INFO]: Evaluation, AUC: 0.794727
+[128445.10, eval_accuracy, 0.794727, 0.299968, 22758, ]
+[20d15h51m36s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449846s
+[128445.12, eval_stop, 0.299968, ]
+[20d15h51m37s][HUGECTR][INFO]: Iter: 23000 Time(1000 iters): 1.810069s Loss: 0.000000
+[20d15h51m38s][HUGECTR][INFO]: Iter: 24000 Time(1000 iters): 1.366458s Loss: 0.000000
+[20d15h51m39s][HUGECTR][INFO]: Iter: 25000 Time(1000 iters): 1.365665s Loss: 0.000000
+[20d15h51m41s][HUGECTR][INFO]: Iter: 26000 Time(1000 iters): 1.368994s Loss: 0.000000
+[133626.63, eval_start, 0.349963, ]
+[20d15h51m42s][HUGECTR][INFO]: Evaluation, AUC: 0.795780
+[134077.10, eval_accuracy, 0.79578, 0.349963, 26551, ]
+[20d15h51m42s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450480s
+[134077.12, eval_stop, 0.349963, ]
+[20d15h51m43s][HUGECTR][INFO]: Iter: 27000 Time(1000 iters): 1.812162s Loss: 0.000000
+[20d15h51m44s][HUGECTR][INFO]: Iter: 28000 Time(1000 iters): 1.365525s Loss: 0.000000
+[20d15h51m45s][HUGECTR][INFO]: Iter: 29000 Time(1000 iters): 1.365726s Loss: 0.000000
+[20d15h51m47s][HUGECTR][INFO]: Iter: 30000 Time(1000 iters): 1.363535s Loss: 0.000000
+[139250.64, eval_start, 0.399958, ]
+[20d15h51m48s][HUGECTR][INFO]: Evaluation, AUC: 0.796694
+[139701.38, eval_accuracy, 0.796694, 0.399958, 30344, ]
+[20d15h51m48s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450740s
+[139701.39, eval_stop, 0.399958, ]
+[20d15h51m49s][HUGECTR][INFO]: Iter: 31000 Time(1000 iters): 1.815636s Loss: 0.000000
+[20d15h51m50s][HUGECTR][INFO]: Iter: 32000 Time(1000 iters): 1.366494s Loss: 0.000000
+[20d15h51m51s][HUGECTR][INFO]: Iter: 33000 Time(1000 iters): 1.363405s Loss: 0.000000
+[20d15h51m53s][HUGECTR][INFO]: Iter: 34000 Time(1000 iters): 1.365676s Loss: 0.000000
+[144879.00, eval_start, 0.449953, ]
+[20d15h51m53s][HUGECTR][INFO]: Evaluation, AUC: 0.797578
+[145328.92, eval_accuracy, 0.797578, 0.449953, 34137, ]
+[20d15h51m53s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449934s
+[145328.94, eval_stop, 0.449953, ]
+[20d15h51m54s][HUGECTR][INFO]: Iter: 35000 Time(1000 iters): 1.813086s Loss: 0.000000
+[20d15h51m56s][HUGECTR][INFO]: Iter: 36000 Time(1000 iters): 1.366633s Loss: 0.000000
+[20d15h51m57s][HUGECTR][INFO]: Iter: 37000 Time(1000 iters): 1.379542s Loss: 0.000000
+[150519.91, eval_start, 0.499947, ]
+[20d15h51m59s][HUGECTR][INFO]: Evaluation, AUC: 0.798305
+[150970.00, eval_accuracy, 0.798305, 0.499947, 37930, ]
+[20d15h51m59s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450102s
+[150970.02, eval_stop, 0.499947, ]
+[20d15h51m59s][HUGECTR][INFO]: Iter: 38000 Time(1000 iters): 1.811720s Loss: 0.000000
+[20d15h52m00s][HUGECTR][INFO]: Iter: 39000 Time(1000 iters): 1.365951s Loss: 0.000000
+[20d15h52m20s][HUGECTR][INFO]: Iter: 40000 Time(1000 iters): 1.367622s Loss: 0.000000
+[20d15h52m30s][HUGECTR][INFO]: Iter: 41000 Time(1000 iters): 1.378399s Loss: 0.000000
+[156161.15, eval_start, 0.549942, ]
+[20d15h52m50s][HUGECTR][INFO]: Evaluation, AUC: 0.798748
+[156611.38, eval_accuracy, 0.798748, 0.549942, 41723, ]
+[20d15h52m50s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450236s
+[156611.39, eval_stop, 0.549942, ]
+[20d15h52m50s][HUGECTR][INFO]: Iter: 42000 Time(1000 iters): 1.810819s Loss: 0.000000
+[20d15h52m60s][HUGECTR][INFO]: Iter: 43000 Time(1000 iters): 1.366212s Loss: 0.000000
+[20d15h52m80s][HUGECTR][INFO]: Iter: 44000 Time(1000 iters): 1.366902s Loss: 0.000000
+[20d15h52m90s][HUGECTR][INFO]: Iter: 45000 Time(1000 iters): 1.377912s Loss: 0.000000
+[161805.60, eval_start, 0.599937, ]
+[20d15h52m10s][HUGECTR][INFO]: Evaluation, AUC: 0.799010
+[162255.66, eval_accuracy, 0.79901, 0.599937, 45516, ]
+[20d15h52m10s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450072s
+[162255.68, eval_stop, 0.599937, ]
+[20d15h52m11s][HUGECTR][INFO]: Iter: 46000 Time(1000 iters): 1.817233s Loss: 0.000000
+[20d15h52m12s][HUGECTR][INFO]: Iter: 47000 Time(1000 iters): 1.366421s Loss: 0.000000
+[20d15h52m14s][HUGECTR][INFO]: Iter: 48000 Time(1000 iters): 1.378869s Loss: 0.000000
+[20d15h52m15s][HUGECTR][INFO]: Iter: 49000 Time(1000 iters): 1.365207s Loss: 0.000000
+[167448.26, eval_start, 0.649931, ]
+[20d15h52m16s][HUGECTR][INFO]: Evaluation, AUC: 0.799480
+[167898.21, eval_accuracy, 0.79948, 0.649931, 49309, ]
+[20d15h52m16s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449961s
+[167898.23, eval_stop, 0.649931, ]
+[20d15h52m17s][HUGECTR][INFO]: Iter: 50000 Time(1000 iters): 1.814710s Loss: 0.000000
+[20d15h52m18s][HUGECTR][INFO]: Iter: 51000 Time(1000 iters): 1.366465s Loss: 0.000000
+[20d15h52m20s][HUGECTR][INFO]: Iter: 52000 Time(1000 iters): 1.378963s Loss: 0.000000
+[20d15h52m21s][HUGECTR][INFO]: Iter: 53000 Time(1000 iters): 1.366613s Loss: 0.000000
+[173091.45, eval_start, 0.699926, ]
+[20d15h52m22s][HUGECTR][INFO]: Evaluation, AUC: 0.800541
+[173541.42, eval_accuracy, 0.800541, 0.699926, 53102, ]
+[20d15h52m22s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449970s
+[173541.43, eval_stop, 0.699926, ]
+[20d15h52m23s][HUGECTR][INFO]: Iter: 54000 Time(1000 iters): 1.812198s Loss: 0.000000
+[20d15h52m24s][HUGECTR][INFO]: Iter: 55000 Time(1000 iters): 1.367124s Loss: 0.000000
+[20d15h52m25s][HUGECTR][INFO]: Iter: 56000 Time(1000 iters): 1.367202s Loss: 0.000000
+[178720.04, eval_start, 0.749921, ]
+[20d15h52m27s][HUGECTR][INFO]: Evaluation, AUC: 0.801349
+[179170.03, eval_accuracy, 0.801349, 0.749921, 56895, ]
+[20d15h52m27s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449997s
+[179170.04, eval_stop, 0.749921, ]
+[20d15h52m27s][HUGECTR][INFO]: Iter: 57000 Time(1000 iters): 1.811533s Loss: 0.000000
+[20d15h52m29s][HUGECTR][INFO]: Iter: 58000 Time(1000 iters): 1.365747s Loss: 0.000000
+[20d15h52m30s][HUGECTR][INFO]: Iter: 59000 Time(1000 iters): 1.366433s Loss: 0.000000
+[20d15h52m31s][HUGECTR][INFO]: Iter: 60000 Time(1000 iters): 1.365650s Loss: 0.000000
+[184347.95, eval_start, 0.799916, ]
+[20d15h52m33s][HUGECTR][INFO]: Evaluation, AUC: 0.801822
+[184797.75, eval_accuracy, 0.801822, 0.799916, 60688, ]
+[20d15h52m33s][HUGECTR][INFO]: Eval Time for 52 iters: 0.449809s
+[184797.76, eval_stop, 0.799916, ]
+[20d15h52m33s][HUGECTR][INFO]: Iter: 61000 Time(1000 iters): 1.811866s Loss: 0.000000
+[20d15h52m35s][HUGECTR][INFO]: Iter: 62000 Time(1000 iters): 1.366470s Loss: 0.000000
+[20d15h52m36s][HUGECTR][INFO]: Iter: 63000 Time(1000 iters): 1.366598s Loss: 0.000000
+[20d15h52m37s][HUGECTR][INFO]: Iter: 64000 Time(1000 iters): 1.364807s Loss: 0.000000
+[189979.30, eval_start, 0.84991, ]
+[20d15h52m38s][HUGECTR][INFO]: Evaluation, AUC: 0.802382
+[190429.72, eval_accuracy, 0.802382, 0.84991, 64481, ]
+[20d15h52m38s][HUGECTR][INFO]: Eval Time for 52 iters: 0.450432s
+[190429.74, eval_stop, 0.84991, ]
+[20d15h52m39s][HUGECTR][INFO]: Iter: 65000 Time(1000 iters): 1.818118s Loss: 0.000000
+[20d15h52m40s][HUGECTR][INFO]: Iter: 66000 Time(1000 iters): 1.366968s Loss: 0.000000
+[20d15h52m42s][HUGECTR][INFO]: Iter: 67000 Time(1000 iters): 1.368302s Loss: 0.000000
+[20d15h52m43s][HUGECTR][INFO]: Iter: 68000 Time(1000 iters): 1.367791s Loss: 0.000000
+[195614.27, eval_start, 0.899905, ]
+[20d15h52m44s][HUGECTR][INFO]: Evaluation, AUC: 0.802674
+[196064.00, eval_accuracy, 0.802674, 0.899905, 68274, ]
+Hit target accuracy AUC 0.802500 at 68274/75868 iterations with batchsize 55296 in 102.64 s. Average speed 36781116.69 records/s.
+[196064.02, eval_stop0.899905, ]
+[196064.02, train_epoch_end, 1, ]
+[196064.03, run_stop, ]
+[196064.03, train_samples, 3775334400, ]
+Hit target accuracy AUC 0.802500 at 68274/75868 iterations with batchsize 55296 in 102.64 s. Average speed 36781116.69 records/s.
++ python3 -m mlperf_logger.format_ctr_output --log_path /tmp/dlrm_hugectr.log --config_file dlrm.json --start_timestamp 1634744966
+:::MLLOG {"namespace": "", "time_ms": 1634745177428, "event_type": "POINT_IN_TIME", "key": "submission_benchmark", "value": "dlrm", "metadata": {"file": "/workspace/dlrm/mlperf_logger/utils.py", "lineno": 34}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "submission_org", "value": "Inspur", "metadata": {"file": "/workspace/dlrm/mlperf_logger/utils.py", "lineno": 39}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "submission_division", "value": "closed", "metadata": {"file": "/workspace/dlrm/mlperf_logger/utils.py", "lineno": 43}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "submission_status", "value": "onprem", "metadata": {"file": "/workspace/dlrm/mlperf_logger/utils.py", "lineno": 47}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "submission_platform", "value": "1xNF5488A5", "metadata": {"file": "/workspace/dlrm/mlperf_logger/utils.py", "lineno": 51}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "eval_samples", "value": 89137319, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 23}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "global_batch_size", "value": 55296, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 25}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "opt_base_learning_rate", "value": 24.0, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 27}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "sgd_opt_base_learning_rate", "value": 24.0, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 29}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177436, "event_type": "POINT_IN_TIME", "key": "sgd_opt_learning_rate_decay_poly_power", "value": 2.0, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 31}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_steps", "value": 2750, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 33}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_factor", "value": 0.0, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 35}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "lr_decay_start_steps", "value": 49315, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 37}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "sgd_opt_learning_rate_decay_steps", "value": 27772, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 39}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "gradient_accumulation_steps", "value": 1, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 41}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "embeddings"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "bottom_mlp_dense1"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "bottom_mlp_dense2"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "bottom_mlp_dense3"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "top_mlp_dense1"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "top_mlp_dense2"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "top_mlp_dense3"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "top_mlp_dense4"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177437, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 52, "tensor": "top_mlp_dense5"}}
+:::MLLOG {"namespace": "", "time_ms": 1634744966000, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146}}
+:::MLLOG {"namespace": "", "time_ms": 1634745059372, "event_type": "INTERVAL_END", "key": "init_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146}}
+:::MLLOG {"namespace": "", "time_ms": 1634745059372, "event_type": "INTERVAL_START", "key": "run_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146}}
+:::MLLOG {"namespace": "", "time_ms": 1634745059422, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1}}
+:::MLLOG {"namespace": "", "time_ms": 1634745065611, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745066285, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.77684, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745066285, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745071475, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0999895}}
+:::MLLOG {"namespace": "", "time_ms": 1634745071925, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.785926, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0999895}}
+:::MLLOG {"namespace": "", "time_ms": 1634745071925, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.0999895}}
+:::MLLOG {"namespace": "", "time_ms": 1634745077109, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.149984}}
+:::MLLOG {"namespace": "", "time_ms": 1634745077559, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.789601, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.149984}}
+:::MLLOG {"namespace": "", "time_ms": 1634745077559, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.149984}}
+:::MLLOG {"namespace": "", "time_ms": 1634745082738, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.199979}}
+:::MLLOG {"namespace": "", "time_ms": 1634745083189, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.791516, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.199979}}
+:::MLLOG {"namespace": "", "time_ms": 1634745083189, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.199979}}
+:::MLLOG {"namespace": "", "time_ms": 1634745088368, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.249974}}
+:::MLLOG {"namespace": "", "time_ms": 1634745088819, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.793352, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.249974}}
+:::MLLOG {"namespace": "", "time_ms": 1634745088819, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.249974}}
+:::MLLOG {"namespace": "", "time_ms": 1634745093995, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.299968}}
+:::MLLOG {"namespace": "", "time_ms": 1634745094445, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.794727, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.299968}}
+:::MLLOG {"namespace": "", "time_ms": 1634745094445, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.299968}}
+:::MLLOG {"namespace": "", "time_ms": 1634745099626, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.349963}}
+:::MLLOG {"namespace": "", "time_ms": 1634745100077, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.79578, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.349963}}
+:::MLLOG {"namespace": "", "time_ms": 1634745100077, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.349963}}
+:::MLLOG {"namespace": "", "time_ms": 1634745105250, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.399958}}
+:::MLLOG {"namespace": "", "time_ms": 1634745105701, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.796694, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.399958}}
+:::MLLOG {"namespace": "", "time_ms": 1634745105701, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.399958}}
+:::MLLOG {"namespace": "", "time_ms": 1634745110879, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.449953}}
+:::MLLOG {"namespace": "", "time_ms": 1634745111328, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.797578, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.449953}}
+:::MLLOG {"namespace": "", "time_ms": 1634745111328, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.449953}}
+:::MLLOG {"namespace": "", "time_ms": 1634745116519, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745116970, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.798305, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745116970, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.499947}}
+:::MLLOG {"namespace": "", "time_ms": 1634745122161, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5499420000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745122611, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.798748, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5499420000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745122611, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5499420000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745127805, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5999370000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745128255, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.79901, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5999370000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745128255, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.5999370000000002}}
+:::MLLOG {"namespace": "", "time_ms": 1634745133448, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.649931}}
+:::MLLOG {"namespace": "", "time_ms": 1634745133898, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.79948, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.649931}}
+:::MLLOG {"namespace": "", "time_ms": 1634745133898, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.649931}}
+:::MLLOG {"namespace": "", "time_ms": 1634745139091, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.699926}}
+:::MLLOG {"namespace": "", "time_ms": 1634745139541, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.800541, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.699926}}
+:::MLLOG {"namespace": "", "time_ms": 1634745139541, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.699926}}
+:::MLLOG {"namespace": "", "time_ms": 1634745144720, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.749921}}
+:::MLLOG {"namespace": "", "time_ms": 1634745145170, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.801349, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.749921}}
+:::MLLOG {"namespace": "", "time_ms": 1634745145170, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.749921}}
+:::MLLOG {"namespace": "", "time_ms": 1634745150347, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.799916}}
+:::MLLOG {"namespace": "", "time_ms": 1634745150797, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.801822, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.799916}}
+:::MLLOG {"namespace": "", "time_ms": 1634745150797, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.799916}}
+:::MLLOG {"namespace": "", "time_ms": 1634745155979, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.84991}}
+:::MLLOG {"namespace": "", "time_ms": 1634745156429, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.802382, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.84991}}
+:::MLLOG {"namespace": "", "time_ms": 1634745156429, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.84991}}
+:::MLLOG {"namespace": "", "time_ms": 1634745161614, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.899905}}
+:::MLLOG {"namespace": "", "time_ms": 1634745162064, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.802674, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 1.899905}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177442, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 36781116.69}, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 136, "step": 0.8999050983286762}}
+:::MLLOG {"namespace": "", "time_ms": 1634745162064, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "epoch_num": 2}}
+:::MLLOG {"namespace": "", "time_ms": 1634745162064, "event_type": "INTERVAL_END", "key": "run_stop", "value": null, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146, "status": "success"}}
+:::MLLOG {"namespace": "", "time_ms": 1634745162064, "event_type": "POINT_IN_TIME", "key": "train_samples", "value": 3775334400, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 146}}
+:::MLLOG {"namespace": "", "time_ms": 1634745177443, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 36781116.69}, "metadata": {"file": "/workspace/dlrm/mlperf_logger/format_ctr_output.py", "lineno": 136, "step": 0.8999050983286762}}
++ ret_code=0
++ sleep 3
++ [[ 0 != 0 ]]
++ readonly node_rank=0
++ node_rank=0
++ readonly local_rank=
++ local_rank=
++ '[' 0 -eq 0 ']'
++ '[' '' -eq 0 ']'
+./run_and_time.sh: line 40: [: : integer expression expected
++ echo RESULT,DLRM,,
+RESULT,DLRM,,

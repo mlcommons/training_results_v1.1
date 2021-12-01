@@ -1,0 +1,1076 @@
++ echo 'Beginning trial 2 of 5'
+Beginning trial 2 of 5
++ docker exec -it single_stage_detector python -c '
+import mlperf_log_utils
+from mlperf_logging.mllog import constants
+mlperf_log_utils.mlperf_submission_log(constants.SSD)'
+:::MLLOG {"namespace": "", "time_ms": 1634262665297, "event_type": "POINT_IN_TIME", "key": "submission_benchmark", "value": "ssd", "metadata": {"file": "/workspace/ssd/mlperf_log_utils.py", "lineno": 73}}
+:::MLLOG {"namespace": "", "time_ms": 1634262665306, "event_type": "POINT_IN_TIME", "key": "submission_org", "value": "Supermicro", "metadata": {"file": "/workspace/ssd/mlperf_log_utils.py", "lineno": 78}}
+:::MLLOG {"namespace": "", "time_ms": 1634262665306, "event_type": "POINT_IN_TIME", "key": "submission_division", "value": "closed", "metadata": {"file": "/workspace/ssd/mlperf_log_utils.py", "lineno": 82}}
+:::MLLOG {"namespace": "", "time_ms": 1634262665306, "event_type": "POINT_IN_TIME", "key": "submission_status", "value": "onprem", "metadata": {"file": "/workspace/ssd/mlperf_log_utils.py", "lineno": 86}}
+:::MLLOG {"namespace": "", "time_ms": 1634262665306, "event_type": "POINT_IN_TIME", "key": "submission_platform", "value": "AS-2124GQ-NART+", "metadata": {"file": "/workspace/ssd/mlperf_log_utils.py", "lineno": 90}}
++ '[' 1 -eq 1 ']'
++ sync
++ sudo /sbin/sysctl vm.drop_caches=3
+vm.drop_caches = 3
++ docker exec -it single_stage_detector python -c '
+from mlperf_logging.mllog import constants
+from mlperf_log_utils import log_event
+log_event(key=constants.CACHE_CLEAR, value=True)'
+:::MLLOG {"namespace": "", "time_ms": 1634262668319, "event_type": "POINT_IN_TIME", "key": "cache_clear", "value": true, "metadata": {"file": "<string>", "lineno": 4}}
++ docker exec -it --env=BATCHSIZE --env=DGXHT --env=DGXNGPU --env=DGXNNODES --env=DGXNSOCKET --env=DGXSOCKETCORES --env=DGXSYSTEM --env=EXTRA_PARAMS --env=NCCL_SOCKET_IFNAME --env=NUMEPOCHS --env=MLPERF_HOST_OS single_stage_detector ./run_inside_docker.sh
+STARTING TIMING RUN AT 2021-10-15 01:51:08 AM
++ NUMEPOCHS=65
++ echo 'running benchmark'
+running benchmark
++ export DATASET_DIR=/data/coco2017
++ DATASET_DIR=/data/coco2017
++ export PRETRAINED_DIR=/pretrained/mxnet
++ PRETRAINED_DIR=/pretrained/mxnet
++ DISTRIBUTED='mpirun --allow-run-as-root --bind-to none --np 4'
++ BIND=./bind.sh
++ mpirun --allow-run-as-root --bind-to none --np 4 ./bind.sh python ssd_main_async.py --batch-size 228 --eval-batch-size 228 --log-interval=100 --coco-root=/data/coco2017 --pretrained-backbone=/pretrained/mxnet/resnet34-333f7ec4.pickle --data-layout=NHWC --epochs 65 --async-val --dataset-size 117266 --eval-dataset-size 5000 --lr-warmup-epoch=5 --lr=0.003157 --weight-decay=1.3e-4 --dali-workers=8 --input-jpg-decode=cache
+num_gpus=4 num_sockets = 2 num_nodes=2 cores_per_socket=64
+num_gpus=4 num_sockets = 2 num_nodes=2 cores_per_socket=64
+num_gpus=4 num_sockets = 2 num_nodes=2 cores_per_socket=64
+num_gpus=4 num_sockets = 2 num_nodes=2 cores_per_socket=64
+:::MLLOG {"namespace": "", "time_ms": 1634262672713, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 230}}
+:::MLLOG {"namespace": "", "time_ms": 1634262672713, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 230}}
+:::MLLOG {"namespace": "", "time_ms": 1634262672713, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 230}}
+:::MLLOG {"namespace": "", "time_ms": 1634262672713, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 230}}
+:::MLLOG {"namespace": "", "time_ms": 1634262672805, "event_type": "POINT_IN_TIME", "key": "seed", "value": 705744385, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 188}}
+[01:51:12] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for CPU
+[01:51:12] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for CPU
+[01:51:12] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for CPU
+[01:51:12] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for CPU
+:::MLLOG {"namespace": "", "time_ms": 1634262672844, "event_type": "POINT_IN_TIME", "key": "seed", "value": 705744385, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 217}}
+about to model_zoo.get_model( resnet34_v1 )
+about to model_zoo.get_model( resnet34_v1 )
+about to model_zoo.get_model( resnet34_v1 )
+INFO:root:Namespace(async_val=True, backbone='resnet34_mlperf', batch_size=228, bn_fp16=False, bn_group=1, bulk_last_wgrad=False, coco_root='/data/coco2017', cocoapi_threads=6, dali_workers=8, data_layout='NHWC', data_shape=300, dataset='coco2017', dataset_size=117266, epochs=65, eval_batch_size=228, eval_dataset_size=5000, fp16_loss_scale=128.0, horovod_num_groups=1, hw_decoder_load=0.0, input_batch_multiplier=1, input_jpg_decode='cache', log_interval=100, log_level='INFO', log_local_ranks=[0], lr=0.003157, lr_decay_epochs=[44, 55], lr_decay_factor=0.1, lr_warmup_epochs=5.0, lr_warmup_factor=0, mode='train_val', momentum=0.9, nms_overlap_thresh=0.5, nms_topk=200, nms_valid_thresh=0.05, no_fuse_bn_add_relu=False, no_fuse_bn_relu=False, post_nms=200, precision='fp16', pretrained_backbone='/pretrained/mxnet/resnet34-333f7ec4.pickle', profile_no_horovod=False, profile_start=None, profile_stop=None, results=None, resume_from='', save_interval=None, seed=705744385, start_epoch=1, synthetic=False, target_map=23, test_anchors=False, test_initialization=False, tfrecord_root='/datasets/coco2017/tfrecord/', use_tfrecord=False, val_epochs=[], val_interval=5, weight_decay=0.00013)
+Namespace(async_val=True, backbone='resnet34_mlperf', batch_size=228, bn_fp16=False, bn_group=1, bulk_last_wgrad=False, coco_root='/data/coco2017', cocoapi_threads=6, dali_workers=8, data_layout='NHWC', data_shape=300, dataset='coco2017', dataset_size=117266, epochs=65, eval_batch_size=228, eval_dataset_size=5000, fp16_loss_scale=128.0, horovod_num_groups=1, hw_decoder_load=0.0, input_batch_multiplier=1, input_jpg_decode='cache', log_interval=100, log_level='INFO', log_local_ranks=[0], lr=0.003157, lr_decay_epochs=[44, 55], lr_decay_factor=0.1, lr_warmup_epochs=5.0, lr_warmup_factor=0, mode='train_val', momentum=0.9, nms_overlap_thresh=0.5, nms_topk=200, nms_valid_thresh=0.05, no_fuse_bn_add_relu=False, no_fuse_bn_relu=False, post_nms=200, precision='fp16', pretrained_backbone='/pretrained/mxnet/resnet34-333f7ec4.pickle', profile_no_horovod=False, profile_start=None, profile_stop=None, results=None, resume_from='', save_interval=None, seed=705744385, start_epoch=1, synthetic=False, target_map=23, test_anchors=False, test_initialization=False, tfrecord_root='/datasets/coco2017/tfrecord/', use_tfrecord=False, val_epochs=[], val_interval=5, weight_decay=0.00013)
+INFO:root:Seed: 705744385
+Seed: 705744385
+INFO:root:precision: fp16
+precision: fp16
+INFO:root:loss scaling: 128.0
+loss scaling: 128.0
+INFO:root:network name: ssd_resnet34_mlperf_NHWC_coco2017_300
+network name: ssd_resnet34_mlperf_NHWC_coco2017_300
+INFO:root:fuse bn relu: True
+fuse bn relu: True
+INFO:root:fuse bn add relu: True
+fuse bn add relu: True
+INFO:root:bn group: 1
+bn group: 1
+INFO:root:bn all reduce fp16: False
+bn all reduce fp16: False
+INFO:root:MPI size: 4
+MPI size: 4
+INFO:root:MPI global rank: 0
+MPI global rank: 0
+INFO:root:MPI local rank: 0
+MPI local rank: 0
+INFO:root:async validation: True
+async validation: True
+INFO:root:[SSD] network: resnet34_v1
+[SSD] network: resnet34_v1
+INFO:root:[SSD] norm layer: <class 'ssd.group_batch_norm.GroupBatchNorm'>
+[SSD] norm layer: <class 'ssd.group_batch_norm.GroupBatchNorm'>
+INFO:root:[SSD] fuse bn relu: True
+[SSD] fuse bn relu: True
+INFO:root:[SSD] fuse bn add relu: True
+[SSD] fuse bn add relu: True
+INFO:root:[SSD] bn group: 1
+[SSD] bn group: 1
+about to model_zoo.get_model( resnet34_v1 )
+/opt/mxnet/python/mxnet/gluon/block.py:1784: UserWarning: Cannot decide type for the following arguments. Consider providing them as input:
+	data: None
+  input_sym_arg_type = in_param.infer_type()[0]
+INFO:root:COCO reader: raw images
+COCO reader: raw images
+:::MLLOG {"namespace": "", "time_ms": 1634262676284, "event_type": "POINT_IN_TIME", "key": "train_samples", "value": 117266, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 367}}
+:::MLLOG {"namespace": "", "time_ms": 1634262676285, "event_type": "POINT_IN_TIME", "key": "max_samples", "value": 1, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 368}}
+:::MLLOG {"namespace": "", "time_ms": 1634262676287, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_steps", "value": 642, "metadata": {"file": "/workspace/ssd/lr_scheduler.py", "lineno": 31}}
+:::MLLOG {"namespace": "", "time_ms": 1634262676287, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_factor", "value": 0, "metadata": {"file": "/workspace/ssd/lr_scheduler.py", "lineno": 32}}
+:::MLLOG {"namespace": "", "time_ms": 1634262676287, "event_type": "POINT_IN_TIME", "key": "opt_base_learning_rate", "value": 0.0899745, "metadata": {"file": "/workspace/ssd/lr_scheduler.py", "lineno": 34}}
+:::MLLOG {"namespace": "", "time_ms": 1634262676287, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_decay_boundary_epochs", "value": [44, 55], "metadata": {"file": "/workspace/ssd/lr_scheduler.py", "lineno": 35}}
+INFO:root:COCO reader: raw images
+COCO reader: raw images
+:::MLLOG {"namespace": "", "time_ms": 1634262676348, "event_type": "POINT_IN_TIME", "key": "eval_samples", "value": 5000, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 410}}
+[01:51:23] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for GPU
+[01:51:24] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for GPU
+[01:51:24] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for GPU
+[01:51:24] ../src/storage/storage.cc:199: Using Pooled (Naive) StorageManager for GPU
+:::MLLOG {"namespace": "", "time_ms": 1634262685817, "event_type": "POINT_IN_TIME", "key": "opt_weight_decay", "value": 0.00013, "metadata": {"file": "/workspace/ssd/trainer.py", "lineno": 28}}
+INFO:root:COCO reader: TFRecord
+COCO reader: TFRecord
+INFO:root:COCO reader: TFRecord
+COCO reader: TFRecord
+INFO:root:Running training dry runs ...
+Running training dry runs ...
+INFO:root:Done
+INFO:root:Running inference dry runs ...
+Done
+Running inference dry runs ...
+INFO:root:Done
+Done
+INFO:root:Cleaning the dummy pipelines ...
+Cleaning the dummy pipelines ...
+INFO:root:Done
+Done
+:::MLLOG {"namespace": "", "time_ms": 1634262709418, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_batchnorm0_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_batchnorm0_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm0_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm0_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv1_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709419, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm1_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm1_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv2_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm2_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm2_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv3_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm3_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm3_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv4_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm4_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm4_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_conv5_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm5_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage1_batchnorm5_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709420, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm0_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm0_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv1_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm1_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm1_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv2_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm2_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm2_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv3_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm3_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm3_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv4_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm4_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm4_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709421, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv5_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm5_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm5_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv6_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm6_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm6_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv7_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm7_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm7_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_conv8_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm8_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage2_batchnorm8_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm0_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm0_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709422, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv1_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm1_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm1_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv2_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm2_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm2_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv3_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm3_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm3_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv4_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm4_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm4_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv5_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm5_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm5_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv6_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709423, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm6_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm6_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv7_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm7_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm7_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv8_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm8_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm8_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv9_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm9_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm9_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv10_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm10_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm10_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv11_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709424, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm11_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm11_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_conv12_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm12_gamma"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_resnetmlperf0_stage3_batchnorm12_beta"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv1_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv1_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv1_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv1_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv2_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv2_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709425, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv2_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv2_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv3_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv3_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv3_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv3_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv4_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_trans_conv4_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv4_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_expand_conv4_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor0_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor0_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor1_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor1_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor2_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709426, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor2_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor3_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor3_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor4_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor4_conv0_bias"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor5_conv0_weight"}}
+:::MLLOG {"namespace": "", "time_ms": 1634262709427, "event_type": "POINT_IN_TIME", "key": "weights_initialization", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 100, "tensor": "ssd0_convpredictor5_conv0_bias"}}
+INFO:root:Loading backbones weights from /pretrained/mxnet/resnet34-333f7ec4.pickle
+Loading backbones weights from /pretrained/mxnet/resnet34-333f7ec4.pickle
+:::MLLOG {"namespace": "", "time_ms": 1634262709999, "event_type": "INTERVAL_END", "key": "init_stop", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 515}}
+:::MLLOG {"namespace": "", "time_ms": 1634262710000, "event_type": "INTERVAL_START", "key": "run_start", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 519}}
+:::MLLOG {"namespace": "", "time_ms": 1634262711882, "event_type": "POINT_IN_TIME", "key": "model_bn_span", "value": 228, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 112}}
+:::MLLOG {"namespace": "", "time_ms": 1634262711883, "event_type": "POINT_IN_TIME", "key": "global_batch_size", "value": 912, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 113}}
+:::MLLOG {"namespace": "", "time_ms": 1634262711883, "event_type": "POINT_IN_TIME", "key": "d_batch_size", "value": 228, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 114}}
+:::MLLOG {"namespace": "", "time_ms": 1634262711883, "event_type": "POINT_IN_TIME", "key": "gradient_accumulation_steps", "value": 1, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 117}}
+INFO:root:Training from epoch: 1
+Training from epoch: 1
+:::MLLOG {"namespace": "", "time_ms": 1634262711883, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 1, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 100][Epoch 1, Batch 100/129] lr: 0.01401, training time: 148.941 [ms], speed: 6123.231 [imgs/sec], loss=9.387
+[Training][Iteration 100][Epoch 1, Batch 100/129] lr: 0.01401, training time: 148.941 [ms], speed: 6123.231 [imgs/sec], loss=9.387
+:::MLLOG {"namespace": "", "time_ms": 1634262726778, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6123.231396312066, "loss": 9.387258529663086}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [1, 100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262726778, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6123.231396312066, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 1] training time: 19.178 [sec],avg speed: 6134.447 [imgs/sec],loss=13.990
+[Training][Epoch 1] training time: 19.178 [sec],avg speed: 6134.447 [imgs/sec],loss=13.990
+:::MLLOG {"namespace": "", "time_ms": 1634262731062, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.446564020923, "lr": 0.018078988317757005, "loss": 13.98997056946274}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 1}}
+:::MLLOG {"namespace": "", "time_ms": 1634262731062, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.446564020923, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262731062, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 1}}
+:::MLLOG {"namespace": "", "time_ms": 1634262731062, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 2, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 200][Epoch 2, Batch 71/129] lr: 0.02803, training time: 147.704 [ms], speed: 6174.512 [imgs/sec], loss=8.105
+[Training][Iteration 200][Epoch 2, Batch 71/129] lr: 0.02803, training time: 147.704 [ms], speed: 6174.512 [imgs/sec], loss=8.105
+:::MLLOG {"namespace": "", "time_ms": 1634262741550, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6174.5118778661945, "loss": 8.105481147766113}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [2, 200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262741550, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6174.5118778661945, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 2] training time: 19.071 [sec],avg speed: 6169.109 [imgs/sec],loss=8.258
+[Training][Epoch 2] training time: 19.071 [sec],avg speed: 6169.109 [imgs/sec],loss=8.258
+:::MLLOG {"namespace": "", "time_ms": 1634262750133, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6169.109313576907, "lr": 0.03615797663551401, "loss": 8.257579415343528}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 2}}
+:::MLLOG {"namespace": "", "time_ms": 1634262750133, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6169.109313576907, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262750133, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 2}}
+:::MLLOG {"namespace": "", "time_ms": 1634262750134, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 3, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 300][Epoch 3, Batch 42/129] lr: 0.04204, training time: 147.249 [ms], speed: 6193.589 [imgs/sec], loss=7.486
+[Training][Iteration 300][Epoch 3, Batch 42/129] lr: 0.04204, training time: 147.249 [ms], speed: 6193.589 [imgs/sec], loss=7.486
+:::MLLOG {"namespace": "", "time_ms": 1634262756318, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6193.589476374275, "loss": 7.485523223876953}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [3, 300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262756318, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6193.589476374275, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 3] training time: 18.961 [sec],avg speed: 6156.600 [imgs/sec],loss=7.258
+[Training][Epoch 3] training time: 18.961 [sec],avg speed: 6156.600 [imgs/sec],loss=7.258
+:::MLLOG {"namespace": "", "time_ms": 1634262769095, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6156.600005733781, "lr": 0.05409681775700934, "loss": 7.2578112334012985}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 3}}
+:::MLLOG {"namespace": "", "time_ms": 1634262769095, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6156.600005733781, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262769095, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 3}}
+:::MLLOG {"namespace": "", "time_ms": 1634262769095, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 4, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 400][Epoch 4, Batch 13/129] lr: 0.05606, training time: 147.607 [ms], speed: 6178.557 [imgs/sec], loss=6.844
+[Training][Iteration 400][Epoch 4, Batch 13/129] lr: 0.05606, training time: 147.607 [ms], speed: 6178.557 [imgs/sec], loss=6.844
+:::MLLOG {"namespace": "", "time_ms": 1634262771014, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6178.55740308013, "loss": 6.843906879425049}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [4, 400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262771015, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6178.55740308013, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 500][Epoch 4, Batch 113/129] lr: 0.07007, training time: 148.240 [ms], speed: 6152.182 [imgs/sec], loss=6.196
+[Training][Iteration 500][Epoch 4, Batch 113/129] lr: 0.07007, training time: 148.240 [ms], speed: 6152.182 [imgs/sec], loss=6.196
+:::MLLOG {"namespace": "", "time_ms": 1634262785838, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6152.182131875828, "loss": 6.196127891540527}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [4, 500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262785839, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6152.182131875828, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 4] training time: 19.118 [sec],avg speed: 6153.639 [imgs/sec],loss=6.625
+[Training][Epoch 4] training time: 19.118 [sec],avg speed: 6153.639 [imgs/sec],loss=6.625
+:::MLLOG {"namespace": "", "time_ms": 1634262788214, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6153.638643832141, "lr": 0.07231595327102804, "loss": 6.625300181928531}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 4}}
+:::MLLOG {"namespace": "", "time_ms": 1634262788214, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6153.638643832141, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262788214, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 4}}
+:::MLLOG {"namespace": "", "time_ms": 1634262788214, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 5, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 600][Epoch 5, Batch 84/129] lr: 0.08409, training time: 148.379 [ms], speed: 6146.412 [imgs/sec], loss=5.944
+[Training][Iteration 600][Epoch 5, Batch 84/129] lr: 0.08409, training time: 148.379 [ms], speed: 6146.412 [imgs/sec], loss=5.944
+:::MLLOG {"namespace": "", "time_ms": 1634262800678, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6146.411895693125, "loss": 5.944087505340576}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [5, 600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262800679, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6146.411895693125, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 5] training time: 18.990 [sec],avg speed: 6147.368 [imgs/sec],loss=6.195
+[Training][Epoch 5] training time: 18.990 [sec],avg speed: 6147.368 [imgs/sec],loss=6.195
+:::MLLOG {"namespace": "", "time_ms": 1634262807204, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6147.367747521667, "lr": 0.0899745, "loss": 6.1950218714773655}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 5}}
+:::MLLOG {"namespace": "", "time_ms": 1634262807204, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6147.367747521667, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262807204, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 5}}
+:::MLLOG {"namespace": "", "time_ms": 1634262807218, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 5}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 909.624 [ms], allgather: 38.107 [ms], asnumpy: 3.919 [ms], speed: 5254.022 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 909.624 [ms], allgather: 38.107 [ms], asnumpy: 3.919 [ms], speed: 5254.022 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634262808170, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 6, "current_iter_num": 0}}
+loading annotations into memory...
+Done (t=0.11s)
+creating index...
+Loading and preparing results...
+DONE (t=0.25s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.79s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.04423
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.09564
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.03507
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.10107
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.07845
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.10674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.11006
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.11006
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634262809731, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 5}}
+:::MLLOG {"namespace": "", "time_ms": 1634262809731, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.04423415805174588, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 5}}
+INFO:root:[Training][Iteration 700][Epoch 6, Batch 55/129] lr: 0.08997, training time: 147.952 [ms], speed: 6164.152 [imgs/sec], loss=5.513
+[Training][Iteration 700][Epoch 6, Batch 55/129] lr: 0.08997, training time: 147.952 [ms], speed: 6164.152 [imgs/sec], loss=5.513
+:::MLLOG {"namespace": "", "time_ms": 1634262816308, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6164.151524250251, "loss": 5.5130791664123535}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [6, 700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262816308, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6164.151524250251, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 6] training time: 19.157 [sec],avg speed: 6141.192 [imgs/sec],loss=5.626
+[Training][Epoch 6] training time: 19.157 [sec],avg speed: 6141.192 [imgs/sec],loss=5.626
+:::MLLOG {"namespace": "", "time_ms": 1634262827328, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6141.191767619243, "lr": 0.0899745, "loss": 5.625828761463017}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 6}}
+:::MLLOG {"namespace": "", "time_ms": 1634262827328, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6141.191767619243, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262827328, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 6}}
+:::MLLOG {"namespace": "", "time_ms": 1634262827328, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 7, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 800][Epoch 7, Batch 26/129] lr: 0.08997, training time: 147.968 [ms], speed: 6163.510 [imgs/sec], loss=5.352
+[Training][Iteration 800][Epoch 7, Batch 26/129] lr: 0.08997, training time: 147.968 [ms], speed: 6163.510 [imgs/sec], loss=5.352
+:::MLLOG {"namespace": "", "time_ms": 1634262831176, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6163.510138476633, "loss": 5.351589202880859}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [7, 800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262831176, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6163.510138476633, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 900][Epoch 7, Batch 126/129] lr: 0.08997, training time: 148.704 [ms], speed: 6132.985 [imgs/sec], loss=5.197
+[Training][Iteration 900][Epoch 7, Batch 126/129] lr: 0.08997, training time: 148.704 [ms], speed: 6132.985 [imgs/sec], loss=5.197
+:::MLLOG {"namespace": "", "time_ms": 1634262846046, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.985406763061, "loss": 5.196706771850586}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [7, 900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262846046, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.985406763061, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 7] training time: 19.166 [sec],avg speed: 6138.351 [imgs/sec],loss=5.318
+[Training][Epoch 7] training time: 19.166 [sec],avg speed: 6138.351 [imgs/sec],loss=5.318
+:::MLLOG {"namespace": "", "time_ms": 1634262846495, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6138.350899579505, "lr": 0.0899745, "loss": 5.317562044128891}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 7}}
+:::MLLOG {"namespace": "", "time_ms": 1634262846495, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6138.350899579505, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262846495, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 7}}
+:::MLLOG {"namespace": "", "time_ms": 1634262846495, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 8, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1000][Epoch 8, Batch 97/129] lr: 0.08997, training time: 148.637 [ms], speed: 6135.752 [imgs/sec], loss=5.075
+[Training][Iteration 1000][Epoch 8, Batch 97/129] lr: 0.08997, training time: 148.637 [ms], speed: 6135.752 [imgs/sec], loss=5.075
+:::MLLOG {"namespace": "", "time_ms": 1634262860913, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.752235702505, "loss": 5.074689865112305}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [8, 1000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262860913, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.752235702505, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 8] training time: 19.026 [sec],avg speed: 6135.750 [imgs/sec],loss=5.078
+[Training][Epoch 8] training time: 19.026 [sec],avg speed: 6135.750 [imgs/sec],loss=5.078
+:::MLLOG {"namespace": "", "time_ms": 1634262865521, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.749529486196, "lr": 0.0899745, "loss": 5.078004788607359}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 8}}
+:::MLLOG {"namespace": "", "time_ms": 1634262865521, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.749529486196, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262865521, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 8}}
+:::MLLOG {"namespace": "", "time_ms": 1634262865521, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 9, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1100][Epoch 9, Batch 68/129] lr: 0.08997, training time: 148.539 [ms], speed: 6139.792 [imgs/sec], loss=4.928
+[Training][Iteration 1100][Epoch 9, Batch 68/129] lr: 0.08997, training time: 148.539 [ms], speed: 6139.792 [imgs/sec], loss=4.928
+:::MLLOG {"namespace": "", "time_ms": 1634262875622, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6139.791535969021, "loss": 4.927627086639404}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [9, 1100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262875622, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6139.791535969021, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 9] training time: 19.174 [sec],avg speed: 6135.856 [imgs/sec],loss=4.897
+[Training][Epoch 9] training time: 19.174 [sec],avg speed: 6135.856 [imgs/sec],loss=4.897
+:::MLLOG {"namespace": "", "time_ms": 1634262884695, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.856432456006, "lr": 0.0899745, "loss": 4.897397917370464}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 9}}
+:::MLLOG {"namespace": "", "time_ms": 1634262884695, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.856432456006, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262884696, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 9}}
+:::MLLOG {"namespace": "", "time_ms": 1634262884696, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 10, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1200][Epoch 10, Batch 39/129] lr: 0.08997, training time: 148.185 [ms], speed: 6154.459 [imgs/sec], loss=4.835
+[Training][Iteration 1200][Epoch 10, Batch 39/129] lr: 0.08997, training time: 148.185 [ms], speed: 6154.459 [imgs/sec], loss=4.835
+:::MLLOG {"namespace": "", "time_ms": 1634262890475, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6154.458816101189, "loss": 4.8348188400268555}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [10, 1200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262890475, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6154.458816101189, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 10] training time: 19.028 [sec],avg speed: 6134.880 [imgs/sec],loss=4.772
+[Training][Epoch 10] training time: 19.028 [sec],avg speed: 6134.880 [imgs/sec],loss=4.772
+:::MLLOG {"namespace": "", "time_ms": 1634262903724, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.880256081422, "lr": 0.0899745, "loss": 4.77183074131608}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 10}}
+:::MLLOG {"namespace": "", "time_ms": 1634262903724, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.880256081422, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262903724, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 10}}
+:::MLLOG {"namespace": "", "time_ms": 1634262903737, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 10}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 817.543 [ms], allgather: 12.455 [ms], asnumpy: 7.458 [ms], speed: 5970.449 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 817.543 [ms], allgather: 12.455 [ms], asnumpy: 7.458 [ms], speed: 5970.449 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634262904575, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 11, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.33s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.78s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.10987
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.21977
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.09881
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.19545
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.13622
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.19752
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.20582
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.20582
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634262905721, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 10}}
+:::MLLOG {"namespace": "", "time_ms": 1634262905721, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.10986683995980054, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 10}}
+INFO:root:[Training][Iteration 1300][Epoch 11, Batch 10/129] lr: 0.08997, training time: 148.379 [ms], speed: 6146.442 [imgs/sec], loss=4.733
+[Training][Iteration 1300][Epoch 11, Batch 10/129] lr: 0.08997, training time: 148.379 [ms], speed: 6146.442 [imgs/sec], loss=4.733
+:::MLLOG {"namespace": "", "time_ms": 1634262906059, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6146.442417914448, "loss": 4.732758522033691}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [11, 1300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262906059, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6146.442417914448, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 1400][Epoch 11, Batch 110/129] lr: 0.08997, training time: 148.364 [ms], speed: 6147.047 [imgs/sec], loss=4.657
+[Training][Iteration 1400][Epoch 11, Batch 110/129] lr: 0.08997, training time: 148.364 [ms], speed: 6147.047 [imgs/sec], loss=4.657
+:::MLLOG {"namespace": "", "time_ms": 1634262920896, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6147.046707431157, "loss": 4.6571855545043945}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [11, 1400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262920896, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6147.046707431157, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 11] training time: 19.149 [sec],avg speed: 6143.737 [imgs/sec],loss=4.672
+[Training][Epoch 11] training time: 19.149 [sec],avg speed: 6143.737 [imgs/sec],loss=4.672
+:::MLLOG {"namespace": "", "time_ms": 1634262923725, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6143.736776883443, "lr": 0.0899745, "loss": 4.67194352039071}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 11}}
+:::MLLOG {"namespace": "", "time_ms": 1634262923725, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6143.736776883443, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262923725, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 11}}
+:::MLLOG {"namespace": "", "time_ms": 1634262923725, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 12, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1500][Epoch 12, Batch 81/129] lr: 0.08997, training time: 148.722 [ms], speed: 6132.260 [imgs/sec], loss=4.697
+[Training][Iteration 1500][Epoch 12, Batch 81/129] lr: 0.08997, training time: 148.722 [ms], speed: 6132.260 [imgs/sec], loss=4.697
+:::MLLOG {"namespace": "", "time_ms": 1634262935772, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.259684635594, "loss": 4.696563720703125}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [12, 1500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262935772, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.259684635594, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 12] training time: 19.034 [sec],avg speed: 6132.991 [imgs/sec],loss=4.579
+[Training][Epoch 12] training time: 19.034 [sec],avg speed: 6132.991 [imgs/sec],loss=4.579
+:::MLLOG {"namespace": "", "time_ms": 1634262942760, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.990569129024, "lr": 0.0899745, "loss": 4.579124823212624}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 12}}
+:::MLLOG {"namespace": "", "time_ms": 1634262942760, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.990569129024, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262942760, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 12}}
+:::MLLOG {"namespace": "", "time_ms": 1634262942760, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 13, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1600][Epoch 13, Batch 52/129] lr: 0.08997, training time: 148.099 [ms], speed: 6158.040 [imgs/sec], loss=4.407
+[Training][Iteration 1600][Epoch 13, Batch 52/129] lr: 0.08997, training time: 148.099 [ms], speed: 6158.040 [imgs/sec], loss=4.407
+:::MLLOG {"namespace": "", "time_ms": 1634262950461, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6158.0400445546975, "loss": 4.40711784362793}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [13, 1600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262950462, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6158.0400445546975, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 13] training time: 19.185 [sec],avg speed: 6132.429 [imgs/sec],loss=4.504
+[Training][Epoch 13] training time: 19.185 [sec],avg speed: 6132.429 [imgs/sec],loss=4.504
+:::MLLOG {"namespace": "", "time_ms": 1634262961945, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.428734040463, "lr": 0.0899745, "loss": 4.504336822864621}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 13}}
+:::MLLOG {"namespace": "", "time_ms": 1634262961945, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.428734040463, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262961945, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 13}}
+:::MLLOG {"namespace": "", "time_ms": 1634262961945, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 14, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1700][Epoch 14, Batch 23/129] lr: 0.08997, training time: 148.060 [ms], speed: 6159.670 [imgs/sec], loss=4.602
+[Training][Iteration 1700][Epoch 14, Batch 23/129] lr: 0.08997, training time: 148.060 [ms], speed: 6159.670 [imgs/sec], loss=4.602
+:::MLLOG {"namespace": "", "time_ms": 1634262965351, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6159.670156527392, "loss": 4.601838111877441}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [14, 1700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262965351, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6159.670156527392, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 1800][Epoch 14, Batch 123/129] lr: 0.08997, training time: 148.758 [ms], speed: 6130.770 [imgs/sec], loss=4.154
+[Training][Iteration 1800][Epoch 14, Batch 123/129] lr: 0.08997, training time: 148.758 [ms], speed: 6130.770 [imgs/sec], loss=4.154
+:::MLLOG {"namespace": "", "time_ms": 1634262980227, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6130.769636999538, "loss": 4.153792858123779}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [14, 1800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262980227, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6130.769636999538, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 14] training time: 19.174 [sec],avg speed: 6135.650 [imgs/sec],loss=4.441
+[Training][Epoch 14] training time: 19.174 [sec],avg speed: 6135.650 [imgs/sec],loss=4.441
+:::MLLOG {"namespace": "", "time_ms": 1634262981120, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.6495227014875, "lr": 0.0899745, "loss": 4.441040793130564}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 14}}
+:::MLLOG {"namespace": "", "time_ms": 1634262981120, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.6495227014875, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634262981120, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 14}}
+:::MLLOG {"namespace": "", "time_ms": 1634262981120, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 15, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 1900][Epoch 15, Batch 94/129] lr: 0.08997, training time: 148.677 [ms], speed: 6134.112 [imgs/sec], loss=4.444
+[Training][Iteration 1900][Epoch 15, Batch 94/129] lr: 0.08997, training time: 148.677 [ms], speed: 6134.112 [imgs/sec], loss=4.444
+:::MLLOG {"namespace": "", "time_ms": 1634262995096, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.112138313864, "loss": 4.44352912902832}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [15, 1900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634262995096, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.112138313864, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 15] training time: 19.032 [sec],avg speed: 6133.602 [imgs/sec],loss=4.365
+[Training][Epoch 15] training time: 19.032 [sec],avg speed: 6133.602 [imgs/sec],loss=4.365
+:::MLLOG {"namespace": "", "time_ms": 1634263000153, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.601894650142, "lr": 0.0899745, "loss": 4.364808939397335}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 15}}
+:::MLLOG {"namespace": "", "time_ms": 1634263000153, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.601894650142, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263000153, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 15}}
+:::MLLOG {"namespace": "", "time_ms": 1634263000166, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 15}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 812.197 [ms], allgather: 17.280 [ms], asnumpy: 5.460 [ms], speed: 5988.465 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 812.197 [ms], allgather: 17.280 [ms], asnumpy: 5.460 [ms], speed: 5988.465 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263001002, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 16, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.27s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.73s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.13490
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.25781
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.12998
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.22286
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.15725
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.22590
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.23514
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.23514
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263002041, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 15}}
+:::MLLOG {"namespace": "", "time_ms": 1634263002041, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.13490216353536302, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 15}}
+INFO:root:[Training][Iteration 2000][Epoch 16, Batch 65/129] lr: 0.08997, training time: 148.423 [ms], speed: 6144.583 [imgs/sec], loss=4.349
+[Training][Iteration 2000][Epoch 16, Batch 65/129] lr: 0.08997, training time: 148.423 [ms], speed: 6144.583 [imgs/sec], loss=4.349
+:::MLLOG {"namespace": "", "time_ms": 1634263010649, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6144.583203127057, "loss": 4.349061965942383}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [16, 2000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263010650, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6144.583203127057, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 16] training time: 19.161 [sec],avg speed: 6139.883 [imgs/sec],loss=4.331
+[Training][Epoch 16] training time: 19.161 [sec],avg speed: 6139.883 [imgs/sec],loss=4.331
+:::MLLOG {"namespace": "", "time_ms": 1634263020163, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6139.8834209782635, "lr": 0.0899745, "loss": 4.331142591875653}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 16}}
+:::MLLOG {"namespace": "", "time_ms": 1634263020163, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6139.8834209782635, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263020163, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 16}}
+:::MLLOG {"namespace": "", "time_ms": 1634263020164, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 17, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2100][Epoch 17, Batch 36/129] lr: 0.08997, training time: 147.958 [ms], speed: 6163.915 [imgs/sec], loss=4.114
+[Training][Iteration 2100][Epoch 17, Batch 36/129] lr: 0.08997, training time: 147.958 [ms], speed: 6163.915 [imgs/sec], loss=4.114
+:::MLLOG {"namespace": "", "time_ms": 1634263025490, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6163.914946118771, "loss": 4.114163398742676}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [17, 2100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263025491, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6163.914946118771, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 17] training time: 19.026 [sec],avg speed: 6135.742 [imgs/sec],loss=4.258
+[Training][Epoch 17] training time: 19.026 [sec],avg speed: 6135.742 [imgs/sec],loss=4.258
+:::MLLOG {"namespace": "", "time_ms": 1634263039189, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.742071153722, "lr": 0.0899745, "loss": 4.257608897984028}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 17}}
+:::MLLOG {"namespace": "", "time_ms": 1634263039190, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.742071153722, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263039190, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 17}}
+:::MLLOG {"namespace": "", "time_ms": 1634263039190, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 18, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2200][Epoch 18, Batch 7/129] lr: 0.08997, training time: 148.200 [ms], speed: 6153.864 [imgs/sec], loss=4.221
+[Training][Iteration 2200][Epoch 18, Batch 7/129] lr: 0.08997, training time: 148.200 [ms], speed: 6153.864 [imgs/sec], loss=4.221
+:::MLLOG {"namespace": "", "time_ms": 1634263040227, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6153.864496761552, "loss": 4.220763206481934}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [18, 2200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263040228, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6153.864496761552, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 2300][Epoch 18, Batch 107/129] lr: 0.08997, training time: 148.773 [ms], speed: 6130.152 [imgs/sec], loss=4.116
+[Training][Iteration 2300][Epoch 18, Batch 107/129] lr: 0.08997, training time: 148.773 [ms], speed: 6130.152 [imgs/sec], loss=4.116
+:::MLLOG {"namespace": "", "time_ms": 1634263055105, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6130.151842524609, "loss": 4.116338729858398}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [18, 2300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263055105, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6130.151842524609, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 18] training time: 19.188 [sec],avg speed: 6131.455 [imgs/sec],loss=4.206
+[Training][Epoch 18] training time: 19.188 [sec],avg speed: 6131.455 [imgs/sec],loss=4.206
+:::MLLOG {"namespace": "", "time_ms": 1634263058378, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6131.455362734732, "lr": 0.0899745, "loss": 4.205745715503545}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 18}}
+:::MLLOG {"namespace": "", "time_ms": 1634263058378, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6131.455362734732, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263058378, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 18}}
+:::MLLOG {"namespace": "", "time_ms": 1634263058378, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 19, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2400][Epoch 19, Batch 78/129] lr: 0.08997, training time: 148.628 [ms], speed: 6136.124 [imgs/sec], loss=4.165
+[Training][Iteration 2400][Epoch 19, Batch 78/129] lr: 0.08997, training time: 148.628 [ms], speed: 6136.124 [imgs/sec], loss=4.165
+:::MLLOG {"namespace": "", "time_ms": 1634263069971, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6136.123597088719, "loss": 4.165210723876953}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [19, 2400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263069972, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6136.123597088719, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 19] training time: 19.178 [sec],avg speed: 6134.657 [imgs/sec],loss=4.179
+[Training][Epoch 19] training time: 19.178 [sec],avg speed: 6134.657 [imgs/sec],loss=4.179
+:::MLLOG {"namespace": "", "time_ms": 1634263077556, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.657129724542, "lr": 0.0899745, "loss": 4.17873676248299}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 19}}
+:::MLLOG {"namespace": "", "time_ms": 1634263077556, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.657129724542, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263077556, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 19}}
+:::MLLOG {"namespace": "", "time_ms": 1634263077556, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 20, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2500][Epoch 20, Batch 49/129] lr: 0.08997, training time: 148.021 [ms], speed: 6161.294 [imgs/sec], loss=4.220
+[Training][Iteration 2500][Epoch 20, Batch 49/129] lr: 0.08997, training time: 148.021 [ms], speed: 6161.294 [imgs/sec], loss=4.220
+:::MLLOG {"namespace": "", "time_ms": 1634263084810, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6161.293706991596, "loss": 4.220107555389404}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [20, 2500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263084810, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6161.293706991596, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 20] training time: 19.036 [sec],avg speed: 6132.259 [imgs/sec],loss=4.145
+[Training][Epoch 20] training time: 19.036 [sec],avg speed: 6132.259 [imgs/sec],loss=4.145
+:::MLLOG {"namespace": "", "time_ms": 1634263096593, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.259166928698, "lr": 0.0899745, "loss": 4.145047686994076}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 20}}
+:::MLLOG {"namespace": "", "time_ms": 1634263096593, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.259166928698, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263096593, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 20}}
+:::MLLOG {"namespace": "", "time_ms": 1634263096606, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 20}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 810.736 [ms], allgather: 13.561 [ms], asnumpy: 4.606 [ms], speed: 6032.055 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 810.736 [ms], allgather: 13.561 [ms], asnumpy: 4.606 [ms], speed: 6032.055 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263097435, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 21, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.33s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.78s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.14144
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.26678
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.13622
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.21816
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.15968
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.22675
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.23500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.23500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263098581, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 20}}
+:::MLLOG {"namespace": "", "time_ms": 1634263098581, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.141438141657735, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 20}}
+INFO:root:[Training][Iteration 2600][Epoch 21, Batch 20/129] lr: 0.08997, training time: 148.122 [ms], speed: 6157.092 [imgs/sec], loss=4.203
+[Training][Iteration 2600][Epoch 21, Batch 20/129] lr: 0.08997, training time: 148.122 [ms], speed: 6157.092 [imgs/sec], loss=4.203
+:::MLLOG {"namespace": "", "time_ms": 1634263100398, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6157.0916522043135, "loss": 4.202670574188232}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [21, 2600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263100398, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6157.0916522043135, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 2700][Epoch 21, Batch 120/129] lr: 0.08997, training time: 148.662 [ms], speed: 6134.741 [imgs/sec], loss=3.845
+[Training][Iteration 2700][Epoch 21, Batch 120/129] lr: 0.08997, training time: 148.662 [ms], speed: 6134.741 [imgs/sec], loss=3.845
+:::MLLOG {"namespace": "", "time_ms": 1634263115264, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.740620244327, "loss": 3.845245838165283}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [21, 2700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263115264, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.740620244327, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 21] training time: 19.168 [sec],avg speed: 6137.578 [imgs/sec],loss=4.112
+[Training][Epoch 21] training time: 19.168 [sec],avg speed: 6137.578 [imgs/sec],loss=4.112
+:::MLLOG {"namespace": "", "time_ms": 1634263116604, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6137.5775589591885, "lr": 0.0899745, "loss": 4.1122272291848825}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 21}}
+:::MLLOG {"namespace": "", "time_ms": 1634263116604, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6137.5775589591885, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263116604, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 21}}
+:::MLLOG {"namespace": "", "time_ms": 1634263116605, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 22, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2800][Epoch 22, Batch 91/129] lr: 0.08997, training time: 148.515 [ms], speed: 6140.782 [imgs/sec], loss=3.852
+[Training][Iteration 2800][Epoch 22, Batch 91/129] lr: 0.08997, training time: 148.515 [ms], speed: 6140.782 [imgs/sec], loss=3.852
+:::MLLOG {"namespace": "", "time_ms": 1634263130120, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6140.782086782206, "loss": 3.8521764278411865}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [22, 2800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263130120, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6140.782086782206, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 22] training time: 19.021 [sec],avg speed: 6137.112 [imgs/sec],loss=4.085
+[Training][Epoch 22] training time: 19.021 [sec],avg speed: 6137.112 [imgs/sec],loss=4.085
+:::MLLOG {"namespace": "", "time_ms": 1634263135626, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6137.111940392889, "lr": 0.0899745, "loss": 4.085330199450254}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 22}}
+:::MLLOG {"namespace": "", "time_ms": 1634263135626, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6137.111940392889, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263135627, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 22}}
+:::MLLOG {"namespace": "", "time_ms": 1634263135627, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 23, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 2900][Epoch 23, Batch 62/129] lr: 0.08997, training time: 148.339 [ms], speed: 6148.079 [imgs/sec], loss=3.927
+[Training][Iteration 2900][Epoch 23, Batch 62/129] lr: 0.08997, training time: 148.339 [ms], speed: 6148.079 [imgs/sec], loss=3.927
+:::MLLOG {"namespace": "", "time_ms": 1634263144824, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6148.078682059534, "loss": 3.927284002304077}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [23, 2900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263144824, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6148.078682059534, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 23] training time: 19.159 [sec],avg speed: 6140.669 [imgs/sec],loss=4.053
+[Training][Epoch 23] training time: 19.159 [sec],avg speed: 6140.669 [imgs/sec],loss=4.053
+:::MLLOG {"namespace": "", "time_ms": 1634263154786, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6140.669034522465, "lr": 0.0899745, "loss": 4.052728540213534}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 23}}
+:::MLLOG {"namespace": "", "time_ms": 1634263154786, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6140.669034522465, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263154786, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 23}}
+:::MLLOG {"namespace": "", "time_ms": 1634263154786, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 24, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3000][Epoch 24, Batch 33/129] lr: 0.08997, training time: 147.904 [ms], speed: 6166.168 [imgs/sec], loss=4.144
+[Training][Iteration 3000][Epoch 24, Batch 33/129] lr: 0.08997, training time: 147.904 [ms], speed: 6166.168 [imgs/sec], loss=4.144
+:::MLLOG {"namespace": "", "time_ms": 1634263159667, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6166.167612086828, "loss": 4.144312858581543}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [24, 3000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263159667, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6166.167612086828, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 24] training time: 19.023 [sec],avg speed: 6136.562 [imgs/sec],loss=4.025
+[Training][Epoch 24] training time: 19.023 [sec],avg speed: 6136.562 [imgs/sec],loss=4.025
+:::MLLOG {"namespace": "", "time_ms": 1634263173809, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6136.561981157931, "lr": 0.0899745, "loss": 4.024929400533438}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 24}}
+:::MLLOG {"namespace": "", "time_ms": 1634263173810, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6136.561981157931, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263173810, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 24}}
+:::MLLOG {"namespace": "", "time_ms": 1634263173810, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 25, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3100][Epoch 25, Batch 4/129] lr: 0.08997, training time: 148.688 [ms], speed: 6133.668 [imgs/sec], loss=4.050
+[Training][Iteration 3100][Epoch 25, Batch 4/129] lr: 0.08997, training time: 148.688 [ms], speed: 6133.668 [imgs/sec], loss=4.050
+:::MLLOG {"namespace": "", "time_ms": 1634263174405, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.667897744013, "loss": 4.049777507781982}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [25, 3100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263174405, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.667897744013, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 3200][Epoch 25, Batch 104/129] lr: 0.08997, training time: 148.793 [ms], speed: 6129.300 [imgs/sec], loss=3.940
+[Training][Iteration 3200][Epoch 25, Batch 104/129] lr: 0.08997, training time: 148.793 [ms], speed: 6129.300 [imgs/sec], loss=3.940
+:::MLLOG {"namespace": "", "time_ms": 1634263189284, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6129.300417717051, "loss": 3.9399101734161377}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [25, 3200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263189285, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6129.300417717051, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 25] training time: 19.195 [sec],avg speed: 6129.193 [imgs/sec],loss=3.996
+[Training][Epoch 25] training time: 19.195 [sec],avg speed: 6129.193 [imgs/sec],loss=3.996
+:::MLLOG {"namespace": "", "time_ms": 1634263193005, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6129.192977333431, "lr": 0.0899745, "loss": 3.9963480095530666}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 25}}
+:::MLLOG {"namespace": "", "time_ms": 1634263193005, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6129.192977333431, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263193005, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 25}}
+:::MLLOG {"namespace": "", "time_ms": 1634263193018, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 25}}
+INFO:root:[Validation] save_parameters: 0.002 [ms], inference: 799.937 [ms], allgather: 12.583 [ms], asnumpy: 7.467 [ms], speed: 6097.645 [imgs/sec]
+[Validation] save_parameters: 0.002 [ms], inference: 799.937 [ms], allgather: 12.583 [ms], asnumpy: 7.467 [ms], speed: 6097.645 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263193839, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 26, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.33s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.79s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.16934
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.30641
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.17199
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.24681
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.17888
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.25698
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.26701
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.26701
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263194995, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 25}}
+:::MLLOG {"namespace": "", "time_ms": 1634263194995, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.16933918129842065, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 25}}
+INFO:root:[Training][Iteration 3300][Epoch 26, Batch 75/129] lr: 0.08997, training time: 148.652 [ms], speed: 6135.146 [imgs/sec], loss=3.852
+[Training][Iteration 3300][Epoch 26, Batch 75/129] lr: 0.08997, training time: 148.652 [ms], speed: 6135.146 [imgs/sec], loss=3.852
+:::MLLOG {"namespace": "", "time_ms": 1634263204988, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.146198222626, "loss": 3.852491617202759}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [26, 3300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263204988, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.146198222626, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 26] training time: 19.180 [sec],avg speed: 6133.878 [imgs/sec],loss=3.981
+[Training][Epoch 26] training time: 19.180 [sec],avg speed: 6133.878 [imgs/sec],loss=3.981
+:::MLLOG {"namespace": "", "time_ms": 1634263213019, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.878085942404, "lr": 0.0899745, "loss": 3.981350987456566}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 26}}
+:::MLLOG {"namespace": "", "time_ms": 1634263213019, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.878085942404, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263213019, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 26}}
+:::MLLOG {"namespace": "", "time_ms": 1634263213020, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 27, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3400][Epoch 27, Batch 46/129] lr: 0.08997, training time: 147.992 [ms], speed: 6162.506 [imgs/sec], loss=3.899
+[Training][Iteration 3400][Epoch 27, Batch 46/129] lr: 0.08997, training time: 147.992 [ms], speed: 6162.506 [imgs/sec], loss=3.899
+:::MLLOG {"namespace": "", "time_ms": 1634263219827, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6162.505873083566, "loss": 3.8991098403930664}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [27, 3400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263219828, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6162.505873083566, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 27] training time: 19.036 [sec],avg speed: 6132.362 [imgs/sec],loss=3.969
+[Training][Epoch 27] training time: 19.036 [sec],avg speed: 6132.362 [imgs/sec],loss=3.969
+:::MLLOG {"namespace": "", "time_ms": 1634263232056, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.362161032174, "lr": 0.0899745, "loss": 3.969063436612487}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 27}}
+:::MLLOG {"namespace": "", "time_ms": 1634263232056, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.362161032174, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263232056, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 27}}
+:::MLLOG {"namespace": "", "time_ms": 1634263232056, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 28, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3500][Epoch 28, Batch 17/129] lr: 0.08997, training time: 148.181 [ms], speed: 6154.618 [imgs/sec], loss=4.153
+[Training][Iteration 3500][Epoch 28, Batch 17/129] lr: 0.08997, training time: 148.181 [ms], speed: 6154.618 [imgs/sec], loss=4.153
+:::MLLOG {"namespace": "", "time_ms": 1634263234576, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6154.617581528336, "loss": 4.152637481689453}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [28, 3500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263234576, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6154.617581528336, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 3600][Epoch 28, Batch 117/129] lr: 0.08997, training time: 148.783 [ms], speed: 6129.742 [imgs/sec], loss=3.770
+[Training][Iteration 3600][Epoch 28, Batch 117/129] lr: 0.08997, training time: 148.783 [ms], speed: 6129.742 [imgs/sec], loss=3.770
+:::MLLOG {"namespace": "", "time_ms": 1634263249454, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6129.742406149425, "loss": 3.770158290863037}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [28, 3600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263249454, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6129.742406149425, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 28] training time: 19.182 [sec],avg speed: 6133.355 [imgs/sec],loss=3.934
+[Training][Epoch 28] training time: 19.182 [sec],avg speed: 6133.355 [imgs/sec],loss=3.934
+:::MLLOG {"namespace": "", "time_ms": 1634263251238, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.354767491052, "lr": 0.0899745, "loss": 3.9344757065292475}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 28}}
+:::MLLOG {"namespace": "", "time_ms": 1634263251238, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.354767491052, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263251238, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 28}}
+:::MLLOG {"namespace": "", "time_ms": 1634263251239, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 29, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3700][Epoch 29, Batch 88/129] lr: 0.08997, training time: 148.588 [ms], speed: 6137.760 [imgs/sec], loss=3.659
+[Training][Iteration 3700][Epoch 29, Batch 88/129] lr: 0.08997, training time: 148.588 [ms], speed: 6137.760 [imgs/sec], loss=3.659
+:::MLLOG {"namespace": "", "time_ms": 1634263264315, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6137.759746074484, "loss": 3.6586828231811523}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [29, 3700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263264315, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6137.759746074484, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 29] training time: 19.027 [sec],avg speed: 6135.382 [imgs/sec],loss=3.910
+[Training][Epoch 29] training time: 19.027 [sec],avg speed: 6135.382 [imgs/sec],loss=3.910
+:::MLLOG {"namespace": "", "time_ms": 1634263270265, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.38186296989, "lr": 0.0899745, "loss": 3.909777570515871}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 29}}
+:::MLLOG {"namespace": "", "time_ms": 1634263270266, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.38186296989, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263270266, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 29}}
+:::MLLOG {"namespace": "", "time_ms": 1634263270266, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 30, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 3800][Epoch 30, Batch 59/129] lr: 0.08997, training time: 148.200 [ms], speed: 6153.862 [imgs/sec], loss=3.995
+[Training][Iteration 3800][Epoch 30, Batch 59/129] lr: 0.08997, training time: 148.200 [ms], speed: 6153.862 [imgs/sec], loss=3.995
+:::MLLOG {"namespace": "", "time_ms": 1634263279010, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6153.862315376654, "loss": 3.9949820041656494}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [30, 3800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263279010, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6153.862315376654, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 30] training time: 19.145 [sec],avg speed: 6145.014 [imgs/sec],loss=3.891
+[Training][Epoch 30] training time: 19.145 [sec],avg speed: 6145.014 [imgs/sec],loss=3.891
+:::MLLOG {"namespace": "", "time_ms": 1634263289411, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6145.014243289682, "lr": 0.0899745, "loss": 3.8909085148064664}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 30}}
+:::MLLOG {"namespace": "", "time_ms": 1634263289412, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6145.014243289682, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263289412, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 30}}
+:::MLLOG {"namespace": "", "time_ms": 1634263289425, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 30}}
+INFO:root:[Validation] save_parameters: 0.002 [ms], inference: 794.437 [ms], allgather: 19.257 [ms], asnumpy: 6.553 [ms], speed: 6095.713 [imgs/sec]
+[Validation] save_parameters: 0.002 [ms], inference: 794.437 [ms], allgather: 19.257 [ms], asnumpy: 6.553 [ms], speed: 6095.713 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263290246, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 31, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.27s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.72s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.16996
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.30993
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.16885
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.25348
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.18171
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.25965
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.26969
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.26969
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263291262, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 30}}
+:::MLLOG {"namespace": "", "time_ms": 1634263291263, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.16995579885604928, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 30}}
+INFO:root:[Training][Iteration 3900][Epoch 31, Batch 30/129] lr: 0.08997, training time: 147.988 [ms], speed: 6162.678 [imgs/sec], loss=3.712
+[Training][Iteration 3900][Epoch 31, Batch 30/129] lr: 0.08997, training time: 147.988 [ms], speed: 6162.678 [imgs/sec], loss=3.712
+:::MLLOG {"namespace": "", "time_ms": 1634263294686, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6162.6783222303675, "loss": 3.712470769882202}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [31, 3900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263294686, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6162.6783222303675, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 31] training time: 19.161 [sec],avg speed: 6139.832 [imgs/sec],loss=3.899
+[Training][Epoch 31] training time: 19.161 [sec],avg speed: 6139.832 [imgs/sec],loss=3.899
+:::MLLOG {"namespace": "", "time_ms": 1634263309407, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6139.832388266085, "lr": 0.0899745, "loss": 3.8991676596708076}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 31}}
+:::MLLOG {"namespace": "", "time_ms": 1634263309408, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6139.832388266085, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263309408, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 31}}
+:::MLLOG {"namespace": "", "time_ms": 1634263309408, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 32, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4000][Epoch 32, Batch 1/129] lr: 0.08997, training time: 149.895 [ms], speed: 6084.242 [imgs/sec], loss=3.949
+[Training][Iteration 4000][Epoch 32, Batch 1/129] lr: 0.08997, training time: 149.895 [ms], speed: 6084.242 [imgs/sec], loss=3.949
+:::MLLOG {"namespace": "", "time_ms": 1634263309558, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6084.2415433580345, "loss": 3.9491546154022217}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [32, 4000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263309558, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6084.2415433580345, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 4100][Epoch 32, Batch 101/129] lr: 0.08997, training time: 148.555 [ms], speed: 6139.122 [imgs/sec], loss=3.835
+[Training][Iteration 4100][Epoch 32, Batch 101/129] lr: 0.08997, training time: 148.555 [ms], speed: 6139.122 [imgs/sec], loss=3.835
+:::MLLOG {"namespace": "", "time_ms": 1634263324414, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6139.122165153651, "loss": 3.834786891937256}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [32, 4100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263324414, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6139.122165153651, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 32] training time: 19.022 [sec],avg speed: 6136.803 [imgs/sec],loss=3.869
+[Training][Epoch 32] training time: 19.022 [sec],avg speed: 6136.803 [imgs/sec],loss=3.869
+:::MLLOG {"namespace": "", "time_ms": 1634263328430, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6136.803489578253, "lr": 0.0899745, "loss": 3.869061106815934}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 32}}
+:::MLLOG {"namespace": "", "time_ms": 1634263328431, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6136.803489578253, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263328431, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 32}}
+:::MLLOG {"namespace": "", "time_ms": 1634263328431, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 33, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4200][Epoch 33, Batch 72/129] lr: 0.08997, training time: 148.559 [ms], speed: 6138.970 [imgs/sec], loss=3.835
+[Training][Iteration 4200][Epoch 33, Batch 72/129] lr: 0.08997, training time: 148.559 [ms], speed: 6138.970 [imgs/sec], loss=3.835
+:::MLLOG {"namespace": "", "time_ms": 1634263339127, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6138.970129918068, "loss": 3.834738254547119}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [33, 4200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263339128, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6138.970129918068, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 33] training time: 19.165 [sec],avg speed: 6138.571 [imgs/sec],loss=3.837
+[Training][Epoch 33] training time: 19.165 [sec],avg speed: 6138.571 [imgs/sec],loss=3.837
+:::MLLOG {"namespace": "", "time_ms": 1634263347596, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6138.571431653012, "lr": 0.0899745, "loss": 3.83663993842842}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 33}}
+:::MLLOG {"namespace": "", "time_ms": 1634263347597, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6138.571431653012, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263347597, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 33}}
+:::MLLOG {"namespace": "", "time_ms": 1634263347597, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 34, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4300][Epoch 34, Batch 43/129] lr: 0.08997, training time: 147.994 [ms], speed: 6162.407 [imgs/sec], loss=3.777
+[Training][Iteration 4300][Epoch 34, Batch 43/129] lr: 0.08997, training time: 147.994 [ms], speed: 6162.407 [imgs/sec], loss=3.777
+:::MLLOG {"namespace": "", "time_ms": 1634263353961, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6162.406800878976, "loss": 3.7766287326812744}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [34, 4300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263353961, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6162.406800878976, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 34] training time: 19.023 [sec],avg speed: 6136.647 [imgs/sec],loss=3.841
+[Training][Epoch 34] training time: 19.023 [sec],avg speed: 6136.647 [imgs/sec],loss=3.841
+:::MLLOG {"namespace": "", "time_ms": 1634263366620, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6136.647429894132, "lr": 0.0899745, "loss": 3.8407787308096886}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 34}}
+:::MLLOG {"namespace": "", "time_ms": 1634263366620, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6136.647429894132, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263366620, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 34}}
+:::MLLOG {"namespace": "", "time_ms": 1634263366620, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 35, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4400][Epoch 35, Batch 14/129] lr: 0.08997, training time: 148.142 [ms], speed: 6156.251 [imgs/sec], loss=3.927
+[Training][Iteration 4400][Epoch 35, Batch 14/129] lr: 0.08997, training time: 148.142 [ms], speed: 6156.251 [imgs/sec], loss=3.927
+:::MLLOG {"namespace": "", "time_ms": 1634263368695, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6156.250647003894, "loss": 3.926565408706665}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [35, 4400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263368695, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6156.250647003894, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 4500][Epoch 35, Batch 114/129] lr: 0.08997, training time: 148.872 [ms], speed: 6126.050 [imgs/sec], loss=3.851
+[Training][Iteration 4500][Epoch 35, Batch 114/129] lr: 0.08997, training time: 148.872 [ms], speed: 6126.050 [imgs/sec], loss=3.851
+:::MLLOG {"namespace": "", "time_ms": 1634263383582, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6126.050127619196, "loss": 3.85086989402771}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [35, 4500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263383582, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6126.050127619196, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 35] training time: 19.192 [sec],avg speed: 6129.943 [imgs/sec],loss=3.818
+[Training][Epoch 35] training time: 19.192 [sec],avg speed: 6129.943 [imgs/sec],loss=3.818
+:::MLLOG {"namespace": "", "time_ms": 1634263385813, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6129.9426558842115, "lr": 0.0899745, "loss": 3.8178995709086574}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 35}}
+:::MLLOG {"namespace": "", "time_ms": 1634263385813, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6129.9426558842115, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263385813, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 35}}
+:::MLLOG {"namespace": "", "time_ms": 1634263385826, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 35}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 817.149 [ms], allgather: 11.956 [ms], asnumpy: 3.506 [ms], speed: 6005.198 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 817.149 [ms], allgather: 11.956 [ms], asnumpy: 3.506 [ms], speed: 6005.198 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263386659, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 36, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.29s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.71s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.18166
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.32917
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.18294
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.26173
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.18672
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.26911
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.27976
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.27976
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263387689, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 35}}
+:::MLLOG {"namespace": "", "time_ms": 1634263387689, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.18165642813669047, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 35}}
+INFO:root:[Training][Iteration 4600][Epoch 36, Batch 85/129] lr: 0.08997, training time: 148.481 [ms], speed: 6142.214 [imgs/sec], loss=3.761
+[Training][Iteration 4600][Epoch 36, Batch 85/129] lr: 0.08997, training time: 148.481 [ms], speed: 6142.214 [imgs/sec], loss=3.761
+:::MLLOG {"namespace": "", "time_ms": 1634263399280, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6142.214102854998, "loss": 3.7607016563415527}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [36, 4600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263399281, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6142.214102854998, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 36] training time: 19.018 [sec],avg speed: 6138.080 [imgs/sec],loss=3.806
+[Training][Epoch 36] training time: 19.018 [sec],avg speed: 6138.080 [imgs/sec],loss=3.806
+:::MLLOG {"namespace": "", "time_ms": 1634263405678, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6138.080261999726, "lr": 0.0899745, "loss": 3.806228334084153}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 36}}
+:::MLLOG {"namespace": "", "time_ms": 1634263405678, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6138.080261999726, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263405678, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 36}}
+:::MLLOG {"namespace": "", "time_ms": 1634263405678, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 37, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4700][Epoch 37, Batch 56/129] lr: 0.08997, training time: 148.248 [ms], speed: 6151.838 [imgs/sec], loss=3.798
+[Training][Iteration 4700][Epoch 37, Batch 56/129] lr: 0.08997, training time: 148.248 [ms], speed: 6151.838 [imgs/sec], loss=3.798
+:::MLLOG {"namespace": "", "time_ms": 1634263413980, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6151.838464951106, "loss": 3.797598123550415}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [37, 4700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263413981, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6151.838464951106, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 37] training time: 19.176 [sec],avg speed: 6135.061 [imgs/sec],loss=3.784
+[Training][Epoch 37] training time: 19.176 [sec],avg speed: 6135.061 [imgs/sec],loss=3.784
+:::MLLOG {"namespace": "", "time_ms": 1634263424855, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.060531922889, "lr": 0.0899745, "loss": 3.783890642861063}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 37}}
+:::MLLOG {"namespace": "", "time_ms": 1634263424855, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.060531922889, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263424855, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 37}}
+:::MLLOG {"namespace": "", "time_ms": 1634263424855, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 38, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 4800][Epoch 38, Batch 27/129] lr: 0.08997, training time: 148.175 [ms], speed: 6154.889 [imgs/sec], loss=3.836
+[Training][Iteration 4800][Epoch 38, Batch 27/129] lr: 0.08997, training time: 148.175 [ms], speed: 6154.889 [imgs/sec], loss=3.836
+:::MLLOG {"namespace": "", "time_ms": 1634263428856, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6154.888781182873, "loss": 3.835780620574951}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [38, 4800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263428856, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6154.888781182873, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 4900][Epoch 38, Batch 127/129] lr: 0.08997, training time: 149.029 [ms], speed: 6119.630 [imgs/sec], loss=3.878
+[Training][Iteration 4900][Epoch 38, Batch 127/129] lr: 0.08997, training time: 149.029 [ms], speed: 6119.630 [imgs/sec], loss=3.878
+:::MLLOG {"namespace": "", "time_ms": 1634263443759, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6119.629975670136, "loss": 3.8783345222473145}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [38, 4900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263443759, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6119.629975670136, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 38] training time: 19.202 [sec],avg speed: 6126.946 [imgs/sec],loss=3.777
+[Training][Epoch 38] training time: 19.202 [sec],avg speed: 6126.946 [imgs/sec],loss=3.777
+:::MLLOG {"namespace": "", "time_ms": 1634263444057, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6126.946486916621, "lr": 0.0899745, "loss": 3.7769201744434446}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 38}}
+:::MLLOG {"namespace": "", "time_ms": 1634263444057, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6126.946486916621, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263444057, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 38}}
+:::MLLOG {"namespace": "", "time_ms": 1634263444057, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 39, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5000][Epoch 39, Batch 98/129] lr: 0.08997, training time: 148.890 [ms], speed: 6125.316 [imgs/sec], loss=3.795
+[Training][Iteration 5000][Epoch 39, Batch 98/129] lr: 0.08997, training time: 148.890 [ms], speed: 6125.316 [imgs/sec], loss=3.795
+:::MLLOG {"namespace": "", "time_ms": 1634263458649, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6125.3162543265435, "loss": 3.795354127883911}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [39, 5000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263458649, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6125.3162543265435, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 39] training time: 19.061 [sec],avg speed: 6124.191 [imgs/sec],loss=3.757
+[Training][Epoch 39] training time: 19.061 [sec],avg speed: 6124.191 [imgs/sec],loss=3.757
+:::MLLOG {"namespace": "", "time_ms": 1634263463119, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6124.191000616476, "lr": 0.0899745, "loss": 3.75664752535522}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 39}}
+:::MLLOG {"namespace": "", "time_ms": 1634263463119, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6124.191000616476, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263463119, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 39}}
+:::MLLOG {"namespace": "", "time_ms": 1634263463120, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 40, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5100][Epoch 40, Batch 69/129] lr: 0.08997, training time: 148.884 [ms], speed: 6125.563 [imgs/sec], loss=3.930
+[Training][Iteration 5100][Epoch 40, Batch 69/129] lr: 0.08997, training time: 148.884 [ms], speed: 6125.563 [imgs/sec], loss=3.930
+:::MLLOG {"namespace": "", "time_ms": 1634263473393, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6125.563356510242, "loss": 3.930143117904663}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [40, 5100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263473393, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6125.563356510242, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 40] training time: 19.207 [sec],avg speed: 6125.373 [imgs/sec],loss=3.746
+[Training][Epoch 40] training time: 19.207 [sec],avg speed: 6125.373 [imgs/sec],loss=3.746
+:::MLLOG {"namespace": "", "time_ms": 1634263482327, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6125.373045112502, "lr": 0.0899745, "loss": 3.7464082610699556}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 40}}
+:::MLLOG {"namespace": "", "time_ms": 1634263482327, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6125.373045112502, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263482327, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 40}}
+:::MLLOG {"namespace": "", "time_ms": 1634263482339, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 40}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 798.512 [ms], allgather: 32.744 [ms], asnumpy: 7.027 [ms], speed: 5964.562 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 798.512 [ms], allgather: 32.744 [ms], asnumpy: 7.027 [ms], speed: 5964.562 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263483179, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 41, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.29s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.76s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.17795
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.32394
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.17873
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.25422
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.18345
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.26216
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.27128
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.27128
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263484273, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 40}}
+:::MLLOG {"namespace": "", "time_ms": 1634263484274, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.17795170273315974, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 40}}
+INFO:root:[Training][Iteration 5200][Epoch 41, Batch 40/129] lr: 0.08997, training time: 148.091 [ms], speed: 6158.393 [imgs/sec], loss=3.692
+[Training][Iteration 5200][Epoch 41, Batch 40/129] lr: 0.08997, training time: 148.091 [ms], speed: 6158.393 [imgs/sec], loss=3.692
+:::MLLOG {"namespace": "", "time_ms": 1634263489102, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6158.393178701829, "loss": 3.6922731399536133}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [41, 5200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263489103, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6158.393178701829, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 41] training time: 19.017 [sec],avg speed: 6138.377 [imgs/sec],loss=3.745
+[Training][Epoch 41] training time: 19.017 [sec],avg speed: 6138.377 [imgs/sec],loss=3.745
+:::MLLOG {"namespace": "", "time_ms": 1634263502196, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6138.376605153889, "lr": 0.0899745, "loss": 3.74494812451303}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 41}}
+:::MLLOG {"namespace": "", "time_ms": 1634263502196, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6138.376605153889, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263502197, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 41}}
+:::MLLOG {"namespace": "", "time_ms": 1634263502197, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 42, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5300][Epoch 42, Batch 11/129] lr: 0.08997, training time: 148.139 [ms], speed: 6156.380 [imgs/sec], loss=3.691
+[Training][Iteration 5300][Epoch 42, Batch 11/129] lr: 0.08997, training time: 148.139 [ms], speed: 6156.380 [imgs/sec], loss=3.691
+:::MLLOG {"namespace": "", "time_ms": 1634263503826, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6156.38015901117, "loss": 3.6913468837738037}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [42, 5300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263503827, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6156.38015901117, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 5400][Epoch 42, Batch 111/129] lr: 0.08997, training time: 148.669 [ms], speed: 6134.435 [imgs/sec], loss=3.812
+[Training][Iteration 5400][Epoch 42, Batch 111/129] lr: 0.08997, training time: 148.669 [ms], speed: 6134.435 [imgs/sec], loss=3.812
+:::MLLOG {"namespace": "", "time_ms": 1634263518693, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.434553593727, "loss": 3.812253952026367}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [42, 5400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263518694, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.434553593727, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 42] training time: 19.172 [sec],avg speed: 6136.397 [imgs/sec],loss=3.735
+[Training][Epoch 42] training time: 19.172 [sec],avg speed: 6136.397 [imgs/sec],loss=3.735
+:::MLLOG {"namespace": "", "time_ms": 1634263521369, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6136.396813485433, "lr": 0.0899745, "loss": 3.734739665837251}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 42}}
+:::MLLOG {"namespace": "", "time_ms": 1634263521369, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6136.396813485433, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263521369, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 42}}
+:::MLLOG {"namespace": "", "time_ms": 1634263521370, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 43, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5500][Epoch 43, Batch 82/129] lr: 0.08997, training time: 148.595 [ms], speed: 6137.501 [imgs/sec], loss=3.817
+[Training][Iteration 5500][Epoch 43, Batch 82/129] lr: 0.08997, training time: 148.595 [ms], speed: 6137.501 [imgs/sec], loss=3.817
+:::MLLOG {"namespace": "", "time_ms": 1634263533555, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6137.501184993673, "loss": 3.8172528743743896}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [43, 5500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263533555, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6137.501184993673, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 43] training time: 19.169 [sec],avg speed: 6137.328 [imgs/sec],loss=3.721
+[Training][Epoch 43] training time: 19.169 [sec],avg speed: 6137.328 [imgs/sec],loss=3.721
+:::MLLOG {"namespace": "", "time_ms": 1634263540539, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6137.327786152534, "lr": 0.0899745, "loss": 3.7211956294008}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 43}}
+:::MLLOG {"namespace": "", "time_ms": 1634263540539, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6137.327786152534, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263540539, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 43}}
+:::MLLOG {"namespace": "", "time_ms": 1634263540540, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 44, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5600][Epoch 44, Batch 53/129] lr: 0.08997, training time: 148.052 [ms], speed: 6160.010 [imgs/sec], loss=3.880
+[Training][Iteration 5600][Epoch 44, Batch 53/129] lr: 0.08997, training time: 148.052 [ms], speed: 6160.010 [imgs/sec], loss=3.880
+:::MLLOG {"namespace": "", "time_ms": 1634263548386, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6160.010206245127, "loss": 3.8800711631774902}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [44, 5600]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263548387, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6160.010206245127, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 44] training time: 19.028 [sec],avg speed: 6134.968 [imgs/sec],loss=3.700
+[Training][Epoch 44] training time: 19.028 [sec],avg speed: 6134.968 [imgs/sec],loss=3.700
+:::MLLOG {"namespace": "", "time_ms": 1634263559568, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.967733492757, "lr": 0.0899745, "loss": 3.7003328576684}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 44}}
+:::MLLOG {"namespace": "", "time_ms": 1634263559568, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.967733492757, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263559568, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 44}}
+:::MLLOG {"namespace": "", "time_ms": 1634263559568, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 45, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 5700][Epoch 45, Batch 24/129] lr: 0.00900, training time: 147.933 [ms], speed: 6164.949 [imgs/sec], loss=3.315
+[Training][Iteration 5700][Epoch 45, Batch 24/129] lr: 0.00900, training time: 147.933 [ms], speed: 6164.949 [imgs/sec], loss=3.315
+:::MLLOG {"namespace": "", "time_ms": 1634263563119, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6164.949065143697, "loss": 3.3146884441375732}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [45, 5700]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263563119, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6164.949065143697, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 5800][Epoch 45, Batch 124/129] lr: 0.00900, training time: 148.989 [ms], speed: 6121.266 [imgs/sec], loss=3.529
+[Training][Iteration 5800][Epoch 45, Batch 124/129] lr: 0.00900, training time: 148.989 [ms], speed: 6121.266 [imgs/sec], loss=3.529
+:::MLLOG {"namespace": "", "time_ms": 1634263578018, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6121.26558704644, "loss": 3.528730869293213}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [45, 5800]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263578018, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6121.26558704644, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 45] training time: 19.195 [sec],avg speed: 6129.241 [imgs/sec],loss=3.431
+[Training][Epoch 45] training time: 19.195 [sec],avg speed: 6129.241 [imgs/sec],loss=3.431
+:::MLLOG {"namespace": "", "time_ms": 1634263578763, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6129.240559643884, "lr": 0.00899745, "loss": 3.4308594363604406}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 45}}
+:::MLLOG {"namespace": "", "time_ms": 1634263578763, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6129.240559643884, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263578763, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 45}}
+:::MLLOG {"namespace": "", "time_ms": 1634263578776, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 45}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 797.287 [ms], allgather: 27.522 [ms], asnumpy: 6.599 [ms], speed: 6013.891 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 797.287 [ms], allgather: 27.522 [ms], asnumpy: 6.599 [ms], speed: 6013.891 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263579608, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 46, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.27s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.71s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.22627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.38556
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.23267
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.30560
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.21772
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.31275
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.32344
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.32344
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263580623, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 45}}
+:::MLLOG {"namespace": "", "time_ms": 1634263580623, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.22626599908058537, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 45}}
+INFO:root:[Training][Iteration 5900][Epoch 46, Batch 95/129] lr: 0.00900, training time: 148.639 [ms], speed: 6135.673 [imgs/sec], loss=3.312
+[Training][Iteration 5900][Epoch 46, Batch 95/129] lr: 0.00900, training time: 148.639 [ms], speed: 6135.673 [imgs/sec], loss=3.312
+:::MLLOG {"namespace": "", "time_ms": 1634263593729, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6135.673004538002, "loss": 3.3116259574890137}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [46, 5900]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263593730, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6135.673004538002, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 46] training time: 19.030 [sec],avg speed: 6134.156 [imgs/sec],loss=3.345
+[Training][Epoch 46] training time: 19.030 [sec],avg speed: 6134.156 [imgs/sec],loss=3.345
+:::MLLOG {"namespace": "", "time_ms": 1634263598639, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6134.156241831195, "lr": 0.00899745, "loss": 3.345207968726754}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 46}}
+:::MLLOG {"namespace": "", "time_ms": 1634263598639, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6134.156241831195, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263598639, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 46}}
+:::MLLOG {"namespace": "", "time_ms": 1634263598640, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 47, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 6000][Epoch 47, Batch 66/129] lr: 0.00900, training time: 148.368 [ms], speed: 6146.887 [imgs/sec], loss=3.474
+[Training][Iteration 6000][Epoch 47, Batch 66/129] lr: 0.00900, training time: 148.368 [ms], speed: 6146.887 [imgs/sec], loss=3.474
+:::MLLOG {"namespace": "", "time_ms": 1634263608432, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6146.886971935689, "loss": 3.473564386367798}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [47, 6000]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263608432, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6146.886971935689, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 47] training time: 19.160 [sec],avg speed: 6140.436 [imgs/sec],loss=3.317
+[Training][Epoch 47] training time: 19.160 [sec],avg speed: 6140.436 [imgs/sec],loss=3.317
+:::MLLOG {"namespace": "", "time_ms": 1634263617799, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6140.436202390311, "lr": 0.00899745, "loss": 3.316518236500348}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 47}}
+:::MLLOG {"namespace": "", "time_ms": 1634263617800, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6140.436202390311, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263617800, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 47}}
+:::MLLOG {"namespace": "", "time_ms": 1634263617800, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 48, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 6100][Epoch 48, Batch 37/129] lr: 0.00900, training time: 148.020 [ms], speed: 6161.316 [imgs/sec], loss=3.265
+[Training][Iteration 6100][Epoch 48, Batch 37/129] lr: 0.00900, training time: 148.020 [ms], speed: 6161.316 [imgs/sec], loss=3.265
+:::MLLOG {"namespace": "", "time_ms": 1634263623277, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6161.316001980396, "loss": 3.2648837566375732}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [48, 6100]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263623277, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6161.316001980396, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 48] training time: 19.009 [sec],avg speed: 6141.099 [imgs/sec],loss=3.289
+[Training][Epoch 48] training time: 19.009 [sec],avg speed: 6141.099 [imgs/sec],loss=3.289
+:::MLLOG {"namespace": "", "time_ms": 1634263636809, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6141.098590160444, "lr": 0.00899745, "loss": 3.289366180077195}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 48}}
+:::MLLOG {"namespace": "", "time_ms": 1634263636809, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6141.098590160444, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263636809, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 48}}
+:::MLLOG {"namespace": "", "time_ms": 1634263636810, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 49, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 6200][Epoch 49, Batch 8/129] lr: 0.00900, training time: 148.378 [ms], speed: 6146.471 [imgs/sec], loss=3.074
+[Training][Iteration 6200][Epoch 49, Batch 8/129] lr: 0.00900, training time: 148.378 [ms], speed: 6146.471 [imgs/sec], loss=3.074
+:::MLLOG {"namespace": "", "time_ms": 1634263637997, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6146.470565408797, "loss": 3.073582410812378}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [49, 6200]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263637997, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6146.470565408797, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Iteration 6300][Epoch 49, Batch 108/129] lr: 0.00900, training time: 148.716 [ms], speed: 6132.500 [imgs/sec], loss=3.252
+[Training][Iteration 6300][Epoch 49, Batch 108/129] lr: 0.00900, training time: 148.716 [ms], speed: 6132.500 [imgs/sec], loss=3.252
+:::MLLOG {"namespace": "", "time_ms": 1634263652868, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.499888218141, "loss": 3.2524492740631104}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [49, 6300]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263652869, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.499888218141, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 49] training time: 19.190 [sec],avg speed: 6130.757 [imgs/sec],loss=3.283
+[Training][Epoch 49] training time: 19.190 [sec],avg speed: 6130.757 [imgs/sec],loss=3.283
+:::MLLOG {"namespace": "", "time_ms": 1634263655999, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6130.757261639399, "lr": 0.00899745, "loss": 3.282647672549699}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 49}}
+:::MLLOG {"namespace": "", "time_ms": 1634263656000, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6130.757261639399, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263656000, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 49}}
+:::MLLOG {"namespace": "", "time_ms": 1634263656000, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 50, "current_iter_num": 0}}
+INFO:root:[Training][Iteration 6400][Epoch 50, Batch 79/129] lr: 0.00900, training time: 148.687 [ms], speed: 6133.672 [imgs/sec], loss=3.291
+[Training][Iteration 6400][Epoch 50, Batch 79/129] lr: 0.00900, training time: 148.687 [ms], speed: 6133.672 [imgs/sec], loss=3.291
+:::MLLOG {"namespace": "", "time_ms": 1634263667746, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.671912772997, "loss": 3.2906055450439453}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [50, 6400]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263667747, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.671912772997, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 50] training time: 19.182 [sec],avg speed: 6133.262 [imgs/sec],loss=3.267
+[Training][Epoch 50] training time: 19.182 [sec],avg speed: 6133.262 [imgs/sec],loss=3.267
+:::MLLOG {"namespace": "", "time_ms": 1634263675182, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6133.262372634354, "lr": 0.00899745, "loss": 3.26712051288102}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 50}}
+:::MLLOG {"namespace": "", "time_ms": 1634263675182, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6133.262372634354, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263675182, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 50}}
+:::MLLOG {"namespace": "", "time_ms": 1634263675195, "event_type": "INTERVAL_START", "key": "eval_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 335, "epoch_num": 50}}
+INFO:root:[Validation] save_parameters: 0.001 [ms], inference: 793.540 [ms], allgather: 22.980 [ms], asnumpy: 3.625 [ms], speed: 6096.471 [imgs/sec]
+[Validation] save_parameters: 0.001 [ms], inference: 793.540 [ms], allgather: 22.980 [ms], asnumpy: 3.625 [ms], speed: 6096.471 [imgs/sec]
+:::MLLOG {"namespace": "", "time_ms": 1634263676017, "event_type": "INTERVAL_START", "key": "epoch_start", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 196, "epoch_num": 51, "current_iter_num": 0}}
+Loading and preparing results...
+DONE (t=0.24s)
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.69s).
+Accumulating evaluation results...
+DONE (t=0.00s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.23206
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.39247
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.24108
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.31089
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.22037
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.31686
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.32788
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.32788
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.00000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.00000
+:::MLLOG {"namespace": "", "time_ms": 1634263676973, "event_type": "INTERVAL_END", "key": "eval_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 382, "epoch_num": 50}}
+:::MLLOG {"namespace": "", "time_ms": 1634263676974, "event_type": "POINT_IN_TIME", "key": "eval_accuracy", "value": 0.23206077613181758, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 384, "epoch_num": 50}}
+INFO:root:[Training][Iteration 6500][Epoch 51, Batch 50/129] lr: 0.00900, training time: 148.035 [ms], speed: 6160.694 [imgs/sec], loss=3.242
+[Training][Iteration 6500][Epoch 51, Batch 50/129] lr: 0.00900, training time: 148.035 [ms], speed: 6160.694 [imgs/sec], loss=3.242
+:::MLLOG {"namespace": "", "time_ms": 1634263683419, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6160.6936559179685, "loss": 3.2416234016418457}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 252, "step": [51, 6500]}}
+:::MLLOG {"namespace": "", "time_ms": 1634263683419, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6160.6936559179685, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 256}}
+INFO:root:[Training][Epoch 51] training time: 19.035 [sec],avg speed: 6132.649 [imgs/sec],loss=3.265
+[Training][Epoch 51] training time: 19.035 [sec],avg speed: 6132.649 [imgs/sec],loss=3.265
+:::MLLOG {"namespace": "", "time_ms": 1634263695053, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"throughput": 6132.649195666554, "lr": 0.00899745, "loss": 3.2649343833327293}, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 276, "step": 51}}
+:::MLLOG {"namespace": "", "time_ms": 1634263695053, "event_type": "POINT_IN_TIME", "key": "throughput", "value": 6132.649195666554, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 281}}
+:::MLLOG {"namespace": "", "time_ms": 1634263695053, "event_type": "INTERVAL_END", "key": "epoch_stop", "value": null, "metadata": {"file": "/workspace/ssd/model.py", "lineno": 284, "epoch_num": 51}}
+:::MLLOG {"namespace": "", "time_ms": 1634263695053, "event_type": "INTERVAL_END", "key": "run_stop", "value": null, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 540, "status": "success"}}
+INFO:root:Rank 0 done. map=23.20607761318176 @ epoch=50
+Rank 0 done. map=23.20607761318176 @ epoch=50
+:::MLLOG {"namespace": "", "time_ms": 1634263695053, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"d_convergence": "50"}, "metadata": {"file": "/workspace/ssd/ssd_main.py", "lineno": 543, "step": "50"}}
+/opt/mxnet/python/mxnet/gluon/block.py:1784: UserWarning: Cannot decide type for the following arguments. Consider providing them as input:
+	data: None
+  input_sym_arg_type = in_param.infer_type()[0]
+/opt/mxnet/python/mxnet/gluon/block.py:1784: UserWarning: Cannot decide type for the following arguments. Consider providing them as input:
+	data: None
+  input_sym_arg_type = in_param.infer_type()[0]
+/opt/mxnet/python/mxnet/gluon/block.py:1784: UserWarning: Cannot decide type for the following arguments. Consider providing them as input:
+	data: None
+  input_sym_arg_type = in_param.infer_type()[0]
++ ret_code=0
++ set +x
+ENDING TIMING RUN AT 2021-10-15 02:08:21 AM
+RESULT,SINGLE_STAGE_DETECTOR,,1033,nvidia,2021-10-15 01:51:08 AM
