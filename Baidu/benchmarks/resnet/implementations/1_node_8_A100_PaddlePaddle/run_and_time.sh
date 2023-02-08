@@ -25,7 +25,7 @@ export PADDLE_TRAINER_ENDPOINTS=`$PYTHON -c "print(\",\".join([\"$default_addr:\
 
 ORTERUN=`which orterun`
 
-CMD="bash train_imagenet.sh 10.5 2 37 0.00005 408 0.9"
+CMD="bash train_imagenet.sh 10.5 2 37 0.00005 8 0.9"
 NUMPY_SEED=`$PYTHON -c "import numpy; print(numpy.random.randint(1, 100000))"`
 export SEED=${SEED:-"$NUMPY_SEED"}
 
