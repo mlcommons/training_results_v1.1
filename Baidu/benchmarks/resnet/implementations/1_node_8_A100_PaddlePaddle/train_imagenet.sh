@@ -80,7 +80,9 @@ LOG_FILE="${LOG_DIR}/worker.${OMPI_COMM_WORLD_RANK}"
 mkdir -p profile_outs
 # PROFILE="nsys profile -t cublas,cuda,cudnn,nvtx --stats true -o profile_outs/prof_paddle_$OMPI_COMM_WORLD_RANK -y 120 -d 10 -f true" 
 
-$PROFILE $PYTHON -u ./train_imagenet.py \
+export FLAGS_CUDA_GRAPH_USE_STANDALONE_EXECUTOR=1
+export SEED=23344
+python3.8 -u ./train_imagenet.py \
        --model="ResNet50_clas" \
        --total_images=1281167 \
        --data_dir=${data_dir} \

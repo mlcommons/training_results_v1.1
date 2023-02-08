@@ -34,8 +34,10 @@ import math
 from mpi4py import MPI
 
 # test fp16
-from paddle.fluid.contrib.mixed_precision.fp16_utils import rewrite_program
-from paddle.fluid.contrib.mixed_precision.fp16_utils import cast_model_to_fp16
+from paddle.static.amp.fp16_utils import rewrite_program
+from paddle.static.amp.fp16_utils import cast_model_to_fp16
+#from paddle.fluid.contrib.mixed_precision.fp16_utils import rewrite_program
+#from paddle.fluid.contrib.mixed_precision.fp16_utils import cast_model_to_fp16
 
 from mlperf_logging.mllog import constants
 import utils.utility as utility
@@ -141,22 +143,23 @@ def net_config(image, args, is_train, label=0, data_format="NCHW"):
                         data_format=data_format)
     if is_train:
         if args.label_smooth == 0:
-            cost = fluid.layers.softmax_with_cross_entropy(out, label)
+            cost = nn.functional.softmax_with_cross_entropy(out, label)
             cost = fluid.layers.reduce_sum(cost)
         else:
-            label_one_hot = fluid.layers.one_hot(input=label, depth=class_dim)
-            smooth_label = fluid.layers.label_smooth(
-                label=label_one_hot, epsilon=args.label_smooth, dtype="float32")
+            label_one_hot = nn.functional.one_hot(label, class_dim)
+            smooth_label = nn.functional.label_smooth(
+                label=label_one_hot, epsilon=args.label_smooth)
             log_softmax = nn.functional.log_softmax(out)
-            cost = fluid.layers.reduce_sum(-(smooth_label * log_softmax))
+            cost = fluid.layers.nn.reduce_sum(-(smooth_label * log_softmax))
     else:
-        cost = fluid.layers.softmax_with_cross_entropy(out, label)
-        cost = fluid.layers.reduce_sum(cost)
+        cost = nn.functional.softmax_with_cross_entropy(out, label)
+        cost = fluid.layers.nn.reduce_sum(cost)
 
+    cost.persistable = True
     if is_train and args.mlperf_run:
         return cost
-    acc_top1 = fluid.layers.accuracy(input=out, label=label, k=1)
-    acc_top5 = fluid.layers.accuracy(input=out, label=label, k=5)
+    acc_top1 = paddle.metric.accuracy(input=out, label=label, k=1)
+    acc_top5 = paddle.metric.accuracy(input=out, label=label, k=5)
     return cost, acc_top1, acc_top5
 
 
@@ -382,7 +385,10 @@ def train(args):
     image_test_t = scope.var('feed_image_test').get_tensor()
     label_test_t = scope.var('feed_label_test').get_tensor()
 
+    loss_t = scope.var(train_cost.name).get_tensor()
+
     train_graph = None
+    # train_graph_capture_batch_id = 0
     train_graph_capture_batch_id = 1
     assert train_graph_capture_batch_id != 0
 
@@ -402,14 +408,25 @@ def train(args):
         next_batch_data = next(data_iter)
 
         while not pass_end:
+            # print("yoki: batch_id: ", batch_id)
+            # sys.stdout.flush()
+            # if batch_id == 5:
+            #     sys.exit()
             data = next_batch_data
             reader_time = time.time() - t1
             if train_graph:
+                # print("yoki1")
                 image_t._copy_from(data[0]['feed_image'], exe_place)
                 label_t._copy_from(data[0]['feed_label'], exe_place)
                 train_graph.replay()
             else:
+                # print("yoki2")
                 if args.mlperf_run or batch_id % args.fetch_steps != 0:
+                    # print("yoki3")
+                    # image_t._copy_from(data[0]['feed_image'], exe_place)
+                    # label_t._copy_from(data[0]['feed_label'], exe_place)
+                    # data = None
+                    
                     if args.mlperf_run and batch_id == train_graph_capture_batch_id:
                         image_t._copy_from(data[0]['feed_image'], exe_place)
                         label_t._copy_from(data[0]['feed_label'], exe_place)
@@ -425,8 +442,13 @@ def train(args):
                             print('CUDA Graph captured successfully')
                         train_graph.replay()
                 else:
+                    # print("yoki4")
                     loss, acc1, acc5 = train_exe.run(
                         train_prog, feed=data, fetch_list=train_fetch_list)
+                    # image_t._copy_from(data[0]['feed_image'], exe_place)
+                    # label_t._copy_from(data[0]['feed_label'], exe_place)
+                    # data = None
+                    # train_exe.run(train_prog, feed=data)
 
             t2 = time.time()
             period = t2 - t1
@@ -447,8 +469,8 @@ def train(args):
 
                 if args.mlperf_run and trainer_id == 0:
                     print(
-                        "Train Pass {0}, batch {1}, rtime {2:.4f}, time {3:.4f}, speed {4:.2f}".
-                        format(pass_id, batch_id, reader_time, period, speed))
+                        "Train Pass {0}, batch {1}, rtime {2:.4f}, time {3:.4f}, speed {4:.2f}, loss {5}".
+                        format(pass_id, batch_id, reader_time, period, speed, "%.5f" % np.array(loss_t)))
                 elif trainer_id == 0:
                     print(
                         "Train Pass {0}, batch {1}, loss {2}, acc1 {3}, acc5 {4}, rtime{5}, time {6}, speed {7}".
